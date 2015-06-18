@@ -1,7 +1,10 @@
 #!/bin/bash -xv
-cd user-module
-# Otherwise we pick up the parent bundle
-export BUNDLE_GEMFILE=./Gemfile
+pwd
+
+
+cd tmp/*dummy
+export BUNDLE_GEMFILE=$PWD/Gemfile
 bundle install --without system_tests development
+
 # Not running metadata checks as module generate uses invalid license string
-bundle exec rake lint syntax spec
+bundle exec rake test

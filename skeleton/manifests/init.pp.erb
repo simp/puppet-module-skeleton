@@ -1,21 +1,143 @@
 # == Class: <%= metadata.name %>
 #
-# Full description of class <%= metadata.name %> here.
+# Full description of SIMP module '<%= metadata.name %>' here.
 #
-# === Parameters
+# === Welcome to SIMP!
+# This module is a component of the System Integrity Management Platform, a
+# a managed security compliance framework built on Puppet.
 #
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
+# ---
+# *FIXME:* verify that the following paragraph fits this module's characteristics!
+# ---
+#
+# This module is optimally designed for use within a larger SIMP ecosystem, but
+# it can be used independently:
+#
+# * When included within the SIMP ecosystem,
+#   security compliance settings will be managed from the Puppet server.
+#
+# * If used independently, all SIMP-managed security subsystems are disabled by
+#   default, and must be explicitly opted into by administrators.  Please review
+#   the +client_nets+ and +$enable_*+ parameters for details.
+#
+#
+# == Parameters
+#
+# [*service_name*]
+#   The name of the <%= metadata.name %> service.
+#   Type: String
+#   Default:  +$::<%= metadata.name %>::params::service_name+
+#
+# [*package_name*]
+#   Type: String
+#   Default:  +$::<%= metadata.name %>::params::package_name+
+#   The name of the <%= metadata.name %> package.
+#
+# [*client_nets*]
+#   Type: Array of Strings
+#   Default: +['127.0.0.1/32']+
+#   A whitelist of subnets (in CIDR notation) permitted access.
+#
+# [*enable_auditing*]
+#   Type: Boolean
+#   Default: +false+
+#   If true, manage auditing for <%= metadata.name %>.
+#
+# [*enable_firewall*]
+#   Type: Boolean
+#   Default: +false+
+#   If true, manage firewall rules to acommodate <%= metadata.name %>.
+#
+# [*enable_logging*]
+#   Type: Boolean
+#   Default: +false+
+#   If true, manage logging configuration for <%= metadata.name %>.
+#
+# [*enable_pki*]
+#   Type: Boolean
+#   Default: +false+
+#   If true, manage PKI/PKE configuration for <%= metadata.name %>.
+#
+# [*enable_selinux*]
+#   Type: Boolean
+#   Default: +false+
+#   If true, manage selinux to permit <%= metadata.name %>.
+#
+# [*enable_tcpwrappers*]
+#   Type: Boolean
+#   Default: +false+
+#   If true, manage TCP wrappers configuration for <%= metadata.name %>.
+#
+# == Authors
+#
+# * <%= metadata.author || 'Author name here' %>
 #
 class <%= metadata.name %> (
-  $package_name = $::<%= metadata.name %>::params::package_name,
-  $service_name = $::<%= metadata.name %>::params::service_name,
+  $service_name    = $::<%= metadata.name %>::params::service_name,
+  $package_name    = $::<%= metadata.name %>::params::package_name,
+  $tcp_listen_port = '99999',
+  $client_nets     = defined('$::client_nets') ? { true => $::client_nets, default => hiera('client_nets', ['127.0.0.1/32']) },
+  $enable_auditing = defined('$::enable_auditing') ? { true => $::enable_auditing, default => hiera('enable_auditing',false) },
+  $enable_firewall = defined('$::enable_firewall') ? { true => $::enable_firewall, default => hiera('enable_firewall',false) },
+  $enable_logging  = defined('$::enable_logging')  ? { true => $::enable_logging,  default => hiera('enable_logging',false) },
+  $enable_pki  = defined('$::enable_pki')  ? { true => $::enable_pki,  default => hiera('enable_pki',false) },
+  $enable_selinux  = defined('$::enable_selinux')  ? { true => $::enable_selinux,  default => hiera('enable_selinux',false) },
+  $enable_tcpwrappers  = defined('$::enable_tcpwrappers')  ? { true => $::enable_tcpwrappers,  default => hiera('enable_tcpwrappers',false) }
+
 ) inherits ::<%= metadata.name %>::params {
 
-  # validate parameters here
+  validate_string( $service_name )
+  validate_string( $package_name )
+  validate_string( $tcp_listen_port )
+  validate_array( $client_nets )
+  validate_bool( $enable_auditing )
+  validate_bool( $enable_firewall )
+  validate_bool( $enable_logging )
+  validate_bool( $enable_pki )
+  validate_bool( $enable_selinux )
+  validate_bool( $enable_tcpwrappers )
 
-  class { '::<%= metadata.name %>::install': } ->
-  class { '::<%= metadata.name %>::config': } ~>
-  class { '::<%= metadata.name %>::service': } ->
-  Class['::<%= metadata.name %>']
+  include '::<%= metadata.name %>::install'
+  include '::<%= metadata.name %>::config'
+  include '::<%= metadata.name %>::service'
+  Class[ '::<%= metadata.name %>::install' ] ->
+  Class[ '::<%= metadata.name %>::config'  ] ~>
+  Class[ '::<%= metadata.name %>::service' ] ->
+  Class[ '::<%= metadata.name %>' ]
+
+  if $enable_auditing {
+   include '::<%= metadata.name %>::config::auditing'
+   Class[ '::<%= metadata.name %>::config::auditing' ] ->
+   Class[ '::<%= metadata.name %>::service' ]
+  }
+
+  if $enable_firewall {
+   include '::<%= metadata.name %>::config::firewall'
+   Class[ '::<%= metadata.name %>::config::firewall' ] ->
+   Class[ '::<%= metadata.name %>::service'  ]
+  }
+
+  if $enable_logging {
+   include '::<%= metadata.name %>::config::logging'
+   Class[ '::<%= metadata.name %>::config::logging' ] ->
+   Class[ '::<%= metadata.name %>::service' ]
+  }
+
+  if $enable_pki {
+   include '::<%= metadata.name %>::config::pki'
+   Class[ '::<%= metadata.name %>::config::pki' ] ->
+   Class[ '::<%= metadata.name %>::service' ]
+  }
+
+  if $enable_selinux {
+   include '::<%= metadata.name %>::config::selinux'
+   Class[ '::<%= metadata.name %>::config::selinux' ] ->
+   Class[ '::<%= metadata.name %>::service' ]
+  }
+
+  if $enable_tcpwrappers {
+   include '::<%= metadata.name %>::config::tcpwrappers'
+   Class[ '::<%= metadata.name %>::config::tcpwrappers' ] ->
+   Class[ '::<%= metadata.name %>::service' ]
+  }
 }

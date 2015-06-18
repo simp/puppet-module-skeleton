@@ -1,21 +1,14 @@
-Puppet modules often take on the same file system structure. The
-built-in puppet-module tool makes starting modules easy, but the build
-in skeleton module is very simple. This skeleton is very opinionated.
-It's going to assume you're going to start out with tests (both unit and
-system), that you care about the puppet style guide, test using Travis,
-keep track of releases and structure your modules according to strong
-conventions.
+# SIMP puppet module skeleton
+[![Build Status](https://travis-ci.org/sim/puppet-module-skeleton.svg?branch=master)](https://travis-ci.org/simp/puppet-module-skeleton)
 
-[![Build
-Status](https://travis-ci.org/garethr/puppet-module-skeleton.svg?branch=master)](https://travis-ci.org/garethr/puppet-module-skeleton)
+
+This is an extremely opinionated Puppet module skeleton, forked from the fantastic [garethr/puppet-module-skeleton](https://github.com/garethr/puppet-module-skeleton).  It provides a template for the `puppet module generate` tool to generate new modules targeted toward inclusion with [SIMP](https://github.com/NationalSecurityAgency/SIMP), a compliance-management framework built on Puppet.
 
 ## Installation
 
-As a feature, puppet module tool will use `~/.puppet/var/puppet-module/skeleton`
-as template for its `generate` command. The files provided here are
-meant to be better templates for use with the puppet module tool.
+As a feature, `puppet module generate` will use the path defined in the Puppet config item `module_skeleton_dir` as a template (**NOTE:** In the examples below `~/.puppet/var/puppet-module/skeleton` is used; this not universal and you should double-check your local settings before installing).
 
-As we don't want to have our .git files and this README in our skeleton, we export it like this:
+As we don't want to have this repository's .git files and README in our new modules, we install the skeleton like this:
 
     git clone https://github.com/garethr/puppet-module-skeleton
     cd puppet-module-skeleton
@@ -23,7 +16,7 @@ As we don't want to have our .git files and this README in our skeleton, we expo
 
 ## Usage
 
-Then just generate your new module structure like so:
+Now, just generate your new module structure like so:
 
     puppet module generate user-module
 
@@ -59,5 +52,7 @@ Of particular interst should be:
 
 ## Thanks
 
-The trick used in the installation above, and a few other bits came from
+- This module was forked from the [garethr/puppet-module-skeleton](https://github.com/garethr/puppet-module-skeleton).
+
+- The trick used in the installation above, and a few other bits came from
 another excellent module skeleton from [spiette](https://github.com/spiette/puppet-module-skeleton).
