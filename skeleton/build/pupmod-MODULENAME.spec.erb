@@ -1,0 +1,50 @@
+Summary: <%= metadata.summary %>
+Name: pupmod-<%= metadata.name %>
+Version: <%= metadata.version %>
+Release: 0
+License: <%= metadata.license.sub( 'Apache-2.0', 'Apache License, Version 2.0' ) %>
+Group: Applications/System
+Source: %{name}-%{version}-%{release}.tar.gz
+Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
+Requires: pupmod-iptables >= 2.0.0-0
+Requires: puppet >= 3.3.0
+Buildarch: noarch
+
+Prefix: /etc/puppet/environments/simp/modules
+
+%description
+<%= metadata.summary %>
+
+%prep
+%setup -q
+
+%build
+
+%install
+[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+
+mkdir -p %{buildroot}/%{prefix}/<%= metadata.name %>
+
+dirs='files lib manifests templates'
+for dir in $dirs; do
+  test -d $dir && cp -r $dir %{buildroot}/%{prefix}/<%= metadata.name %>
+done
+
+%clean
+[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+
+mkdir -p %{buildroot}/%{prefix}/<%= metadata.name %>
+
+%files
+%defattr(0640,root,puppet,0750)
+%{prefix}/<%= metadata.name %>
+
+%post
+#!/bin/sh
+
+%postun
+# Post uninstall stuff
+
+%changelog
+* <%= Time.now.strftime("%a %b %d %Y") %> <%= metadata.author %> - <%= metadata.version %>-0
+- Initial package.
