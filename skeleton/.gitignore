@@ -2,11 +2,12 @@
 .yardoc
 dist
 /pkg
-/spec/fixtures
+/spec/fixtures/*
+!/spec/fixtures/site.pp
 /.rspec_system
 /.vagrant
 /.bundle
-/vendor
 /Gemfile.lock
+/vendor
 /junit
 /log
