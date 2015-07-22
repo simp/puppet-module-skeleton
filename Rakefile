@@ -30,26 +30,57 @@ def ensure_tmp
 end
 
 
-desc 'generate module'
-task :generate do
-  FileUtils.rm_rf TMP_DIR
-  ensure_tmp
-  Dir.chdir TMP_DIR
-  File.open( 'pupmod.answers', 'w' ){ |f| f.print ANSWERS }
-  sh %Q{bundle exec puppet module generate simp-dummy --module_skeleton_dir=#{SKELETON_DIR} < 'pupmod.answers'}
+desc 'generate and test a basic module'
+task :test do
+  Rake::Task['test:generate'].invoke
+  Rake::Task['test:test'].execute
 end
 
+namespace :test do
+  desc 'generate test module'
+  task :generate do
+    FileUtils.rm_rf TMP_DIR
+    ensure_tmp
+    Dir.chdir TMP_DIR
+    File.open( 'pupmod.answers', 'w' ){ |f| f.print ANSWERS }
+    sh %Q{bundle exec puppet module generate simp-dummy --module_skeleton_dir=#{SKELETON_DIR} < 'pupmod.answers'}
+  end
 
-desc 'test the generated module'
-task :test do
-  ensure_tmp
-  Dir.chdir TMP_DIR
 
-  mod_dir = ['dummy', 'simp-dummy'].select{ |x| File.directory? x }.first
-  puts "===== '#{Dir.pwd}' '#{mod_dir}'"
-  "#{File.expand_path(mod_dir)}"
-  puts "===== Entering #{mod_dir}"
-  Dir.chdir mod_dir
+  desc 'run `bundle exec rake test` inside the generated module'
+  task :test do
+    ensure_tmp
+    Dir.chdir TMP_DIR
 
-  Bundler.with_clean_env { system 'bundle && bundle exec rake test' }
+    # Different versions of `puppet module generate` will produce a directory
+    # with the name (changed since Puppet #21272/PUP-3124:
+    mod_dir = ['dummy', 'simp-dummy'].select{ |x| File.directory? x }.first
+    puts "==== '#{Dir.pwd}' '#{mod_dir}'"
+    "#{File.expand_path(mod_dir)}"
+    puts "==== Entering #{mod_dir}"
+    Dir.chdir mod_dir
+
+    # propagate relavent environment variables
+    env_globals = []
+    [
+      'PUPPET_VERSION',
+      'STRICT_VARIABLES',
+      'FUTURE_PARSER',
+      'TRUSTED_NODE_DATA',
+      'TRAVIS',
+      'CI',
+    ].each do |v|
+      env_globals << %Q(#{v}="#{ENV[v]}") if ENV.key?( v )
+    end
+    env_globals_line = env_globals.join(' ')
+
+    Bundler.with_clean_env do
+      ['bundle --without development system_tests',
+       'bundle exec rake test'].each do |cmd|
+        line = "#{env_globals_line} #{cmd}"
+        puts "==== EXECUTING: #{line}"
+        exit 1 unless system(line)
+      end
+    end
+  end
 end
