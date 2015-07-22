@@ -16,13 +16,11 @@ group :test do
   gem "metadata-json-lint"
   gem "simp-rspec-puppet-facts"
 
-  # simp-rake-helpers does not suport puppet 2.7.X
-  # FIXME: simp-rake-helpers should support Puppet 4.X
-  if (!(['2','4'].include?( "#{ENV['PUPPET_VERSION']}".split('.').first)) &&
-      ("#{ENV['PUPPET_VERSION']}" !~ /~> ?(2|4)/ ? true : false) ) &&
+  # simp-rake-helpers does not suport puppet 2.7.X, 4+ (SIMP-208)
+  if !(['2','4'].include?("#{ENV['PUPPET_VERSION']}".scan(/\d+/).first)) &&
       # simp-rake-helpers and ruby 1.8.7 bomb Travis tests
       # TODO: fix upstream deps (parallel in simp-rake-helpers)
-      !( ENV['TRAVIS'] && RUBY_VERSION.sub(/\.\d+$/,'') == '1.8' )
+      RUBY_VERSION.sub(/\.\d+$/,'') != '1.8'
     gem 'simp-rake-helpers'
   end
 end
