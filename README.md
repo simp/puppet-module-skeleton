@@ -1,5 +1,5 @@
 # SIMP puppet module skeleton
-[![Build Status](https://travis-ci.org/sim/puppet-module-skeleton.svg?branch=master)](https://travis-ci.org/simp/puppet-module-skeleton)
+[![Build Status](https://travis-ci.org/simp/puppet-module-skeleton.svg?branch=master)](https://travis-ci.org/simp/puppet-module-skeleton)
 
 
 This is an extremely opinionated Puppet module skeleton, forked from the fantastic [garethr/puppet-module-skeleton](https://github.com/garethr/puppet-module-skeleton).  It provides a template for the `puppet module generate` tool to generate new modules targeted toward inclusion with [SIMP](https://github.com/NationalSecurityAgency/SIMP), a compliance-management framework built on Puppet.
