@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1ae5cdf2_6d9597e3",
+        "filename": "skeleton/spec/spec_helper_acceptance.rb.erb",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1004834
+      },
+      "writtenOn": "2015-09-08T23:07:14Z",
+      "side": 1,
+      "message": "Magic!",
+      "revId": "8e875652b4c180e1a5b2e7efc3f9bda879e6ff09",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
