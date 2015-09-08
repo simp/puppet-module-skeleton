@@ -120,10 +120,15 @@ RSpec.configure do |c|
   end
 
   c.before(:each) do
-    set_environment(environment) if defined?(environment)
+    @spec_global_env_temp = Dir.mktmpdir('simpspec')
+
+    if defined?(environment)
+      set_environment(environment)
+      @spec_global_env_temp = File.join(@spec_global_env_temp,environment.to_s)
+      FileUtils.mkdir_p(@spec_global_env_temp)
+    end
 
     # ensure the user running these tests has an accessible environmentpath
-    @spec_global_env_temp = Dir.mktmpdir('simpspec')
     Puppet[:environmentpath] = @spec_global_env_temp
     Puppet[:user] = Etc.getpwuid(Process.uid).name
     Puppet[:group] = Etc.getgrgid(Process.gid).name
@@ -139,6 +144,7 @@ RSpec.configure do |c|
   c.after(:each) do
     # clean up the mocked environmentpath
     FileUtils.rm_rf(@spec_global_env_temp)
+    @spec_global_env_temp = nil
   end
 end
 
