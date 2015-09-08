@@ -120,15 +120,25 @@ RSpec.configure do |c|
   end
 
   c.before(:each) do
-    if defined?(environment)
-      set_environment(environment)
-    end
+    set_environment(environment) if defined?(environment)
 
+    # ensure the user running these tests has an accessible environmentpath
+    @spec_global_env_temp = Dir.mktmpdir('simpspec')
+    Puppet[:environmentpath] = @spec_global_env_temp
+    Puppet[:user] = Etc.getpwuid(Process.uid).name
+    Puppet[:group] = Etc.getgrgid(Process.gid).name
+
+    # sanitize hieradata
     if defined?(hieradata)
       set_hieradata(hieradata.gsub(':','_'))
     elsif defined?(class_name)
       set_hieradata(class_name.gsub(':','_'))
     end
+  end
+
+  c.after(:each) do
+    # clean up the mocked environmentpath
+    FileUtils.rm_rf(@spec_global_env_temp)
   end
 end
 
