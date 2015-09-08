@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1ae5cdf2_8d090398",
+        "filename": "skeleton/spec/spec_helper.rb",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1004834
+      },
+      "writtenOn": "2015-09-08T22:19:23Z",
+      "side": 1,
+      "message": "If this is set, it needs to create a subdirectory below the temp directory. Otherwise, things might not work.",
+      "revId": "48475d3d07cabfbe6710b50b12a3ef76a6ea732e",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
