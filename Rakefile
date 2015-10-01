@@ -29,12 +29,27 @@ def ensure_tmp
   FileUtils.mkdir_p TMP_DIR
 end
 
+def generate_module( name, answers_file=nil )
+  cmd = "bundle exec puppet module generate #{name} --module_skeleton_dir=#{SKELETON_DIR}"
+  if answers_file
+    cmd = "#{cmd} < #{answers_file}"
+  end
+  sh %Q{#{cmd}}
+end
+
+
+desc 'generate a module using the skeleton'
+task :generate,[:module_name] do |t,args|
+  generate_module(args.module_name)
+end
+
 
 desc 'generate and test a basic module'
 task :test do
   Rake::Task['test:generate'].invoke
   Rake::Task['test:test'].execute
 end
+
 
 namespace :test do
   desc 'generate test module'
@@ -43,7 +58,7 @@ namespace :test do
     ensure_tmp
     Dir.chdir TMP_DIR
     File.open( 'pupmod.answers', 'w' ){ |f| f.print ANSWERS }
-    sh %Q{bundle exec puppet module generate simp-dummy --module_skeleton_dir=#{SKELETON_DIR} < 'pupmod.answers'}
+    generate_module('simp-dummy','pupmod.answers')
   end
 
 
