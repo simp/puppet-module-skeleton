@@ -4,6 +4,7 @@
 # It ensures that auditing rules are defined.
 #
 class <%= metadata.name %>::config::auditing {
+  assert_private()
 
   # FIXME: ensure your module's auditing settings are defined here.
   $msg = "FIXME: define the ${module_name} module's auditing settings."

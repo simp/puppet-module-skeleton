@@ -4,6 +4,7 @@
 # It ensures that tcpwrappers rules are defined.
 #
 class <%= metadata.name %>::config::tcpwrappers {
+  assert_private()
 
   # FIXME: ensure your module's tcpwrappers settings are defined here.
   $msg = "FIXME: define the ${module_name} module's tcpwrappers settings."
