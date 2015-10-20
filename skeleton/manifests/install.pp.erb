@@ -3,6 +3,7 @@
 # This class is called from <%= metadata.name %> for install.
 #
 class <%= metadata.name %>::install {
+  assert_private()
 
   package { $::<%= metadata.name %>::package_name:
     ensure => present,

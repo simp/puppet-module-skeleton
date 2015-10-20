@@ -4,6 +4,7 @@
 # It ensure the service is running.
 #
 class <%= metadata.name %>::service {
+  assert_private()
 
   service { $::<%= metadata.name %>::service_name:
     ensure     => running,
