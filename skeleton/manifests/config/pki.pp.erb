@@ -4,6 +4,7 @@
 # It ensures that pki rules are defined.
 #
 class <%= metadata.name %>::config::config::pki {
+  assert_private()
 
   # FIXME: ensure your module's pki settings are defined here.
   $msg = "FIXME: define the ${module_name} module's pki settings."
