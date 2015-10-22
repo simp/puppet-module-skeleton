@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ab29df4_5e26afbb",
+        "filename": ".travis.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-22T13:49:10Z",
+      "side": 1,
+      "message": "This field is starting to look pretty wide.  What do folks think about shrinking the env/rvm matrix to be more selective?  If we are, what should we select?  I\u0027m thinking of:\n- dropping FUTURE_PARSER from 3.7 (and dropping 3.7 once SIMP upgrades)\n- always including TRUSTED_NODE_DATA\u003dyes\n- always including STRICT_VARIABLES\u003dyes",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 51
+      },
+      "revId": "d3f556f7f61af0a4ac8afea967d6ba0b8460aa13",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab29df4_7e2b7382",
+        "filename": "skeleton/.travis.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-22T13:49:10Z",
+      "side": 1,
+      "message": "Same discussion applies here as the top .travis.yml",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 29
+      },
+      "revId": "d3f556f7f61af0a4ac8afea967d6ba0b8460aa13",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
