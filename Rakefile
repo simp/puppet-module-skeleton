@@ -19,7 +19,7 @@ TMP_DIR         = ENV.fetch( 'TMP_DIR', File.expand_path( 'tmp', File.dirname( _
 BUNDLER_GEMFILE = ENV.fetch( 'BUNDLER_GEMFILE', './Gemfile' )
 CLEAN << TMP_DIR
 
-if Rake.verbose
+if Rake.verbose == true
   puts "SKELETON_DIR    = '#{SKELETON_DIR}'"
   puts "PUPPET_CONF_DIR = '#{PUPPET_CONF_DIR}'"
 end
