@@ -106,38 +106,38 @@ class <%= metadata.name %> (
   Class[ '::<%= metadata.name %>' ]
 
   if $enable_auditing {
-   include '::<%= metadata.name %>::config::auditing'
-   Class[ '::<%= metadata.name %>::config::auditing' ] ->
-   Class[ '::<%= metadata.name %>::service' ]
+    include '::<%= metadata.name %>::config::auditing'
+    Class[ '::<%= metadata.name %>::config::auditing' ] ->
+    Class[ '::<%= metadata.name %>::service' ]
   }
 
   if $enable_firewall {
-   include '::<%= metadata.name %>::config::firewall'
-   Class[ '::<%= metadata.name %>::config::firewall' ] ->
-   Class[ '::<%= metadata.name %>::service'  ]
+    include '::<%= metadata.name %>::config::firewall'
+    Class[ '::<%= metadata.name %>::config::firewall' ] ->
+    Class[ '::<%= metadata.name %>::service'  ]
   }
 
   if $enable_logging {
-   include '::<%= metadata.name %>::config::logging'
-   Class[ '::<%= metadata.name %>::config::logging' ] ->
-   Class[ '::<%= metadata.name %>::service' ]
+    include '::<%= metadata.name %>::config::logging'
+    Class[ '::<%= metadata.name %>::config::logging' ] ->
+    Class[ '::<%= metadata.name %>::service' ]
   }
 
   if $enable_pki {
-   include '::<%= metadata.name %>::config::pki'
-   Class[ '::<%= metadata.name %>::config::pki' ] ->
-   Class[ '::<%= metadata.name %>::service' ]
+    include '::<%= metadata.name %>::config::pki'
+    Class[ '::<%= metadata.name %>::config::pki' ] ->
+    Class[ '::<%= metadata.name %>::service' ]
   }
 
   if $enable_selinux {
-   include '::<%= metadata.name %>::config::selinux'
-   Class[ '::<%= metadata.name %>::config::selinux' ] ->
-   Class[ '::<%= metadata.name %>::service' ]
+    include '::<%= metadata.name %>::config::selinux'
+    Class[ '::<%= metadata.name %>::config::selinux' ] ->
+    Class[ '::<%= metadata.name %>::service' ]
   }
 
   if $enable_tcpwrappers {
-   include '::<%= metadata.name %>::config::tcpwrappers'
-   Class[ '::<%= metadata.name %>::config::tcpwrappers' ] ->
-   Class[ '::<%= metadata.name %>::service' ]
+    include '::<%= metadata.name %>::config::tcpwrappers'
+    Class[ '::<%= metadata.name %>::config::tcpwrappers' ] ->
+    Class[ '::<%= metadata.name %>::service' ]
   }
 }
