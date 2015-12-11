@@ -3,21 +3,27 @@ people using it. If you follow these contributing guidelines your patch
 will likely make it into a release a little quicker.
 
 
-## Contributing
+## Contributing and workflow
 
-1. Fork the repo.
+SIMP has its own [Contribution Guidelines](https://simp-project.atlassian.net/wiki/display/SD/Contributing+to+SIMP). You should read them in detail, but it will summarized here.
 
-2. Run the tests. We only take pull requests with passing tests, and
-   it's great to know that you have a clean slate.
+1. Fork the project on GitHub.
 
-3. Add a test for your change. Only refactoring and documentation
-   changes require no new tests. If you are adding functionality
-   or fixing a bug, please add a test.
+2. Make a Feature branch for you changes.
 
-4. Make the test pass.
+3. Make your changes!
 
-5. Push to your fork and submit a pull request.
+4. Save your changes in a single commit using `git rebase` and squashing them.
 
+5. Push your changes up to GitHub.
+
+6. Create a Pull Request (PR) with your changes.
+
+7. [Travis CI](https://travis-ci.org/) will run tests on your PR. Make sure these tests pass.
+
+8. Your changes will be picked up by an admin in [GerritHub](https://review.gerrithub.io/#/admin/projects/?filter=simp%252F) and your code will be reviewed.
+
+9. Hopefully your code will be accepted and merged!
 
 ## Dependencies
 
