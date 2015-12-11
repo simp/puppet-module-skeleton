@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac4a560_1735c1d9",
+        "filename": "skeleton/CONTRIBUTING.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-12-11T20:57:40Z",
+      "side": 1,
+      "message": "No apostrophe for possessive \"its.\"",
+      "range": {
+        "startLine": 8,
+        "startChar": 11,
+        "endLine": 8,
+        "endChar": 12
+      },
+      "revId": "61dbdc70d155d7ab713b7b6fb4fa90af4a6a7fe4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac4a560_3730fde7",
+        "filename": "skeleton/CONTRIBUTING.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-12-11T20:57:40Z",
+      "side": 1,
+      "message": "Avoid first-person singular voice in tech documentation.",
+      "range": {
+        "startLine": 8,
+        "startChar": 154,
+        "endLine": 8,
+        "endChar": 155
+      },
+      "revId": "61dbdc70d155d7ab713b7b6fb4fa90af4a6a7fe4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac4a560_f73cc5c1",
+        "filename": "skeleton/CONTRIBUTING.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-12-11T20:57:40Z",
+      "side": 1,
+      "message": "A link to Travis CI would be handy here",
+      "range": {
+        "startLine": 22,
+        "startChar": 3,
+        "endLine": 22,
+        "endChar": 12
+      },
+      "revId": "61dbdc70d155d7ab713b7b6fb4fa90af4a6a7fe4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac4a560_d741893a",
+        "filename": "skeleton/CONTRIBUTING.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-12-11T20:57:40Z",
+      "side": 1,
+      "message": "A link to our gerrithub projects would be handy here",
+      "range": {
+        "startLine": 24,
+        "startChar": 49,
+        "endLine": 24,
+        "endChar": 58
+      },
+      "revId": "61dbdc70d155d7ab713b7b6fb4fa90af4a6a7fe4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
