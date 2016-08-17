@@ -16,6 +16,24 @@
       "revId": "38c2a07496b6656eeee720fcaed5685d01dbdf84",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_8f116156",
+        "filename": "skeleton/.puppet-lint.rc",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2016-08-17T17:14:50Z",
+      "side": 1,
+      "message": "correct, but we don\u0027t use it ATM.",
+      "parentUuid": "baa041b7_96286ee3",
+      "revId": "38c2a07496b6656eeee720fcaed5685d01dbdf84",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
