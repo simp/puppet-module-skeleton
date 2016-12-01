@@ -6,9 +6,9 @@ describe '<%= metadata.name %>' do
     it { is_expected.to create_class('<%= metadata.name %>') }
     it { is_expected.to contain_class('<%= metadata.name %>') }
     it { is_expected.to contain_class('<%= metadata.name %>::params') }
-    it { is_expected.to contain_class('<%= metadata.name %>::install').that_comes_before('<%= metadata.name %>::config') }
+    it { is_expected.to contain_class('<%= metadata.name %>::install').that_comes_before('Class[<%= metadata.name %>::config]') }
     it { is_expected.to contain_class('<%= metadata.name %>::config') }
-    it { is_expected.to contain_class('<%= metadata.name %>::service').that_subscribes_to('<%= metadata.name %>::config') }
+    it { is_expected.to contain_class('<%= metadata.name %>::service').that_subscribes_to('Class[<%= metadata.name %>::config]') }
 
     it { is_expected.to contain_service('<%= metadata.name %>') }
     it { is_expected.to contain_package('<%= metadata.name %>').with_ensure('present') }
@@ -37,7 +37,7 @@ describe '<%= metadata.name %>' do
           ###it_behaves_like "a structured module"
           it { is_expected.to contain_class('<%= metadata.name %>::config::firewall') }
 
-          it { is_expected.to contain_class('<%= metadata.name %>::config::firewall').that_comes_before('<%= metadata.name %>::service') }
+          it { is_expected.to contain_class('<%= metadata.name %>::config::firewall').that_comes_before('Class[<%= metadata.name %>::service]') }
           it { is_expected.to create_iptables__add_tcp_stateful_listen('allow_<%= metadata.name %>_tcp_connections').with_dports('1234') }
         end
 
@@ -47,7 +47,7 @@ describe '<%= metadata.name %>' do
           }}
           ###it_behaves_like "a structured module"
           it { is_expected.to contain_class('<%= metadata.name %>::config::selinux') }
-          it { is_expected.to contain_class('<%= metadata.name %>::config::selinux').that_comes_before('<%= metadata.name %>::service') }
+          it { is_expected.to contain_class('<%= metadata.name %>::config::selinux').that_comes_before('Class[<%= metadata.name %>::service]') }
           it { is_expected.to create_notify('FIXME: selinux') }
         end
 
@@ -57,7 +57,7 @@ describe '<%= metadata.name %>' do
           }}
           ###it_behaves_like "a structured module"
           it { is_expected.to contain_class('<%= metadata.name %>::config::auditing') }
-          it { is_expected.to contain_class('<%= metadata.name %>::config::auditing').that_comes_before('<%= metadata.name %>::service') }
+          it { is_expected.to contain_class('<%= metadata.name %>::config::auditing').that_comes_before('Class[<%= metadata.name %>::service]') }
           it { is_expected.to create_notify('FIXME: auditing') }
         end
 
@@ -67,7 +67,7 @@ describe '<%= metadata.name %>' do
           }}
           ###it_behaves_like "a structured module"
           it { is_expected.to contain_class('<%= metadata.name %>::config::logging') }
-          it { is_expected.to contain_class('<%= metadata.name %>::config::logging').that_comes_before('<%= metadata.name %>::service') }
+          it { is_expected.to contain_class('<%= metadata.name %>::config::logging').that_comes_before('Class[<%= metadata.name %>::service]') }
           it { is_expected.to create_notify('FIXME: logging') }
         end
       end
