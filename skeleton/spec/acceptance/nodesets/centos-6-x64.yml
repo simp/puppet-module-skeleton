@@ -5,18 +5,16 @@ HOSTS:
       - master
       - server
     platform:   el-6-x86_64
-    box:        puppetlabs/centos-6.6-64-nocm
-    box_url:    https://vagrantcloud.com/puppetlabs/boxes/centos-6.6-64-nocm
+    box:        centos/6
     hypervisor: vagrant
   client:
     roles:
       - agent
       - client
     platform:   el-6-x86_64
-    box:        puppetlabs/centos-6.6-64-nocm
-    box_url:    https://vagrantcloud.com/puppetlabs/boxes/centos-6.6-64-nocm
+    box:        centos/6
     hypervisor: vagrant
 CONFIG:
   log_level: verbose
-  type:      foss
+  type:      aio
   vagrant_memsize: 256

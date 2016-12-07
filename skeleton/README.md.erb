@@ -1,5 +1,5 @@
 **FIXME**: Ensure the badges are correct and complete, then remove this message!
-[![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html) [![Build Status](https://travis-ci.org/simp/pupmod-simp-<%= metadata.name %>.svg)](https://travis-ci.org/simp/pupmod-simp-<%= metadata.name %>) [![SIMP compatibility](https://img.shields.io/badge/SIMP%20compatibility-4.2.*%2F5.1.*-orange.svg)](https://img.shields.io/badge/SIMP%20compatibility-4.2.*%2F5.1.*-orange.svg)
+[![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html) [![Build Status](https://travis-ci.org/simp/pupmod-simp-<%= metadata.name %>.svg)](https://travis-ci.org/simp/pupmod-simp-<%= metadata.name %>) [![SIMP compatibility](https://img.shields.io/badge/SIMP%20compatibility-6.*-orange.svg)](https://img.shields.io/badge/SIMP%20compatibility-6.*-orange.svg)
 
 #### Table of Contents
 
@@ -14,6 +14,7 @@
 6. [Development - Guide for contributing to the module](#development)
     * [Acceptance Tests - Beaker env variables](#acceptance-tests)
 
+
 ## Description
 
 **FIXME:** Ensure the *Description* section is correct and complete, then remove this message!
@@ -21,6 +22,7 @@
 Start with a one- or two-sentence summary of what the module does and/or what problem it solves. This is your 30-second elevator pitch for your module. Consider including OS and Puppet version compatability, and any other information users will need to quickly assess the module's viability within their environment.
 
 You can give more descriptive information in a second paragraph. This paragraph should answer the questions: "What does this module *do*?" and "Why would I use it?" If your module has a range of functionality (installation, configuration, management, etc.), this is the time to mention it.
+
 
 ### This is a SIMP module
 
@@ -35,7 +37,9 @@ This module is optimally designed for use within a larger SIMP ecosystem, but it
  * When included within the SIMP ecosystem, security compliance settings will be managed from the Puppet server.
  * If used independently, all SIMP-managed security subsystems are disabled by default and must be explicitly opted into by administrators.  Please review the `$client_nets`, `$enable_*` and `$use_*` parameters in `manifests/init.pp` for details.
 
+
 ## Setup
+
 
 ### What <%= metadata.name %> affects
 
@@ -49,6 +53,7 @@ If there's more that they should know about, though, this is the place to mentio
  * Dependencies that your module automatically installs.
  * Warnings or other important notices.
 
+
 ### Setup Requirements **OPTIONAL**
 
 **FIXME:** Ensure the *Setup Requirements* section is correct and complete, then remove this message!
@@ -57,11 +62,13 @@ If your module requires anything extra before setting up (pluginsync enabled, et
 
 If your most recent release breaks compatibility or requires particular steps for upgrading, you might want to include an additional "Upgrading" section here.
 
+
 ### Beginning with <%= metadata.name %>
 
 **FIXME:** Ensure the *Beginning with <%= metadata.name %>* section is correct and complete, then remove this message!
 
 The very basic steps needed for a user to get the module up and running. This can include setup steps, if necessary, or it can be an example of the most basic use of the module.
+
 
 ## Usage
 
@@ -69,11 +76,13 @@ The very basic steps needed for a user to get the module up and running. This ca
 
 This section is where you describe how to customize, configure, and do the fancy stuff with your module here. It's especially helpful if you include usage examples and code samples for doing things with your module.
 
+
 ## Reference
 
 **FIXME:** Ensure the *Reference* section is correct and complete, then remove this message!  If there is pre-generated YARD documentation for this module, ensure the text links to it and remove references to inline documentation.
 
 Please refer to the inline documentation within each source file, or to the module's generated YARD documentation for reference material.
+
 
 ## Limitations
 
@@ -81,11 +90,12 @@ Please refer to the inline documentation within each source file, or to the modu
 
 SIMP Puppet modules are generally intended for use on Red Hat Enterprise Linux and compatible distributions, such as CentOS. Please see the [`metadata.json` file](./metadata.json) for the most up-to-date list of supported operating systems, Puppet versions, and module dependencies.
 
+
 ## Development
 
 **FIXME:** Ensure the *Development* section is correct and complete, then remove this message!
 
-Please read our [Contribution Guide](https://simp-project.atlassian.net/wiki/display/SD/Contributing+to+SIMP) and visit our [developer wiki](https://simp-project.atlassian.net/wiki/display/SD/SIMP+Development+Home).
+Please read our [Contribution Guide] (http://simp-doc.readthedocs.io/en/stable/contributors_guide/index.html).
 
 ### Acceptance tests
 
