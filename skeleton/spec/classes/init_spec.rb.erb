@@ -25,12 +25,12 @@ describe '<%= metadata.name %>' do
         context "<%= metadata.name %> class without any parameters" do
           let(:params) {{ }}
           it_behaves_like "a structured module"
-          it { is_expected.to contain_class('<%= metadata.name %>').with_client_nets( ['127.0.0.1/32']) }
+          it { is_expected.to contain_class('<%= metadata.name %>').with_trusted_nets( ['127.0.0.1/32']) }
         end
 
         context "<%= metadata.name %> class with firewall enabled" do
           let(:params) {{
-            :client_nets     => ['10.0.2.0/24'],
+            :trusted_nets     => ['10.0.2.0/24'],
             :tcp_listen_port => '1234',
             :enable_firewall => true,
           }}
