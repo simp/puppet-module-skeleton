@@ -2,7 +2,12 @@
 [![Build Status](https://travis-ci.org/simp/puppet-module-skeleton.svg?branch=master)](https://travis-ci.org/simp/puppet-module-skeleton)
 
 
-This is a _very_ opinionated Puppet module skeleton, forked from the fantastic [garethr/puppet-module-skeleton](https://github.com/garethr/puppet-module-skeleton).  It provides a template for the `puppet module generate` tool to generate new modules targeted toward inclusion with [SIMP](https://github.com/NationalSecurityAgency/SIMP), a compliance-management framework built on Puppet.
+This is a _very_ opinionated Puppet module skeleton, forked from the fantastic
+[garethr/puppet-module-skeleton](https://github.com/garethr/puppet-module-skeleton).
+It provides a template for the `puppet module generate` tool to generate new
+modules targeted toward inclusion with
+[SIMP](https://github.com/NationalSecurityAgency/SIMP), a compliance-management
+framework built on Puppet.
 
 ## Usage
 
@@ -15,7 +20,6 @@ Once you have your module then install the development dependencies:
     cd user-module
     bundle install
 
-
 ### Rake tasks
 
 Now you should have a bunch of rake commands to help with your module
@@ -24,6 +28,7 @@ development:
     rake acceptance                                # Run acceptance tests
     rake beaker                                    # Run beaker acceptance tests
     rake beaker:run[nodeset]                       # Run a Beaker test against a specific Nod...
+    rake beaker:suites                             # Run beaker suites acceptance tests
     rake beaker_nodes                              # List available beaker nodesets
     rake build                                     # Build puppet module package
     rake clean                                     # Clean a built module package / Remove an...
@@ -50,11 +55,11 @@ development:
 
 Of particular interest should be:
 
-* `rake acceptance` - run acceptance tests
-* `rake spec`       - run unit tests
-* `rake test`       - run syntax, lint, and unit tests, and validate metadata
-* `rake lint`       - checks against the puppet style guide
-* `rake syntax`     - to check your have valid puppet and erb syntax
+* `rake beaker:suites` - run all beaker suite tests
+* `rake spec`          - run unit tests
+* `rake test`          - run syntax, lint, and unit tests, and validate metadata
+* `rake lint`          - checks against the puppet style guide
+* `rake syntax`        - to check your have valid puppet and erb syntax
 
 ## Thanks
 
