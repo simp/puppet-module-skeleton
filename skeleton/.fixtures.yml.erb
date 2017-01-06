@@ -1,8 +1,14 @@
 ---
 fixtures:
   repositories:
-    stdlib:   "https://github.com/simp/puppetlabs-stdlib.git"
-    iptables: "https://github.com/simp/pupmod-simp-iptables.git"
-    simplib:  "https://github.com/simp/pupmod-simp-simplib.git"
+    iptables:
+      repo: https://github.com/simp/pupmod-simp-iptables.git
+      ref: 6.0.0-pre1
+    simplib:
+      repo: https://github.com/simp/pupmod-simp-simplib
+      ref: 3.1.0
+    stdlib:
+      repo: https://github.com/simp/puppetlabs-stdlib
+      ref: 4.13.1
   symlinks:
     <%= metadata.name %>: "#{source_dir}"
