@@ -50,7 +50,7 @@
 class <%= metadata.name %> (
   String $service_name                     = $::<%= metadata.name %>::params::service_name,
   String $package_name                     = $::<%= metadata.name %>::params::package_name,
-  Stdlib::Compat::Integer $tcp_listen_port = '99999',
+  Simplib::Port $tcp_listen_port           = 9999,
   Array[String] $trusted_nets              = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1/32'] }),
   Boolean $enable_pki                      = simplib::lookup('simp_options::pki', { 'default_value' => false }),
   Boolean $enable_auditing                 = simplib::lookup('simp_options::auditd', { 'default_value' => false }),
