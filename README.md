@@ -56,10 +56,17 @@ development:
 Of particular interest should be:
 
 * `rake beaker:suites` - run all beaker suite tests
-* `rake spec`          - run unit tests
 * `rake test`          - run syntax, lint, and unit tests, and validate metadata
+* `rake spec`          - run unit tests
 * `rake lint`          - checks against the puppet style guide
-* `rake syntax`        - to check your have valid puppet and erb syntax
+* `rake syntax`        - to check you have valid puppet and erb syntax
+
+
+## Notes on versions
+
+* The `Gemfile.lock` was last generated with Ruby 2.1.9
+* The `.fixtures.yml` was last updated for SIMP 6.0.0-Alpha
+
 
 ## Thanks
 

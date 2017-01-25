@@ -25,7 +25,7 @@ describe '<%= metadata.name %>' do
         context "<%= metadata.name %> class without any parameters" do
           let(:params) {{ }}
           it_behaves_like "a structured module"
-          it { is_expected.to contain_class('<%= metadata.name %>').with_trusted_nets( ['127.0.0.1/32']) }
+          it { is_expected.to contain_class('<%= metadata.name %>').with_trusted_nets(['127.0.0.1/32']) }
         end
 
         context "<%= metadata.name %> class with firewall enabled" do
@@ -38,7 +38,8 @@ describe '<%= metadata.name %>' do
           it { is_expected.to contain_class('<%= metadata.name %>::config::firewall') }
 
           it { is_expected.to contain_class('<%= metadata.name %>::config::firewall').that_comes_before('Class[<%= metadata.name %>::service]') }
-          it { is_expected.to create_iptables__listen__tcp_stateful('allow_<%= metadata.name %>_tcp_connections').with_dports(1234) }
+          it { is_expected.to create_iptables__listen__tcp_stateful('allow_<%= metadata.name %>_tcp_connections').with_dports(1234)
+          }
         end
 
         context "<%= metadata.name %> class with selinux enabled" do

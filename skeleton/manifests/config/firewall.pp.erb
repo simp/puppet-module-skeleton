@@ -7,7 +7,7 @@ class <%= metadata.name %>::config::firewall {
   assert_private()
 
   # FIXME: ensure your module's firewall settings are defined here.
-  iptables::listen::tcp_stateful{ 'allow_<%= metadata.name %>_tcp_connections':
+  iptables::listen::tcp_stateful { 'allow_<%= metadata.name %>_tcp_connections':
     trusted_nets => $::<%= metadata.name %>::trusted_nets,
     dports       => $::<%= metadata.name %>::tcp_listen_port
   }
