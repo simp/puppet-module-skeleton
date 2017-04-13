@@ -11,16 +11,19 @@ framework built on Puppet.
 
 ## Usage
 
+
+### Generating a module
+
 Now, just generate your new module structure like so:
 
-    rake generate[module_name]
+    rake generate[<forgename>-<modulename>]
 
 Once you have your module then install the development dependencies:
 
-    cd user-module
+    cd <modulename>
     bundle install
 
-### Rake tasks
+#### Rake tasks
 
 Now you should have a bunch of rake commands to help with your module
 development:
@@ -55,7 +58,7 @@ development:
 
 Of particular interest should be:
 
-* `rake beaker:suites` - run all beaker suite tests
+* `rake beaker:suites` - run all beaker [acceptance test suites](https://github.com/simp/rubygem-simp-beaker-helpers#suites)
 * `rake test`          - run syntax, lint, and unit tests, and validate metadata
 * `rake spec`          - run unit tests
 * `rake lint`          - checks against the puppet style guide

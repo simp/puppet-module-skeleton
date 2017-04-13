@@ -1,5 +1,9 @@
-# vim: set expandtab ts=2 sw=2:
+#
 ---
+cache:
+  paths:
+    - vendor
+    - .bundle
 puppet-syntax:
   stage: test
   tags:
@@ -13,7 +17,6 @@ puppet-lint:
   tags:
     - docker
   image: ruby:2.1
-  allow_failure: true
   script:
     - bundle install
     - bundle exec rake lint

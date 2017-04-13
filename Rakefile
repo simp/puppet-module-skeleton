@@ -4,8 +4,8 @@ ANSWERS = <<EOF
 0.1.3
 simp
 Apache-2.0
-A simple dummy module designed to test Travis.
-https://github.com/simp/pupmod-simp-dummy
+A simple dnsmasq module designed to test the module skeleton.
+https://github.com/simp/pupmod-simp-dnsmasq
 
 
 
@@ -58,18 +58,21 @@ namespace :test do
     ensure_tmp
     Dir.chdir TMP_DIR
     File.open( 'pupmod.answers', 'w' ){ |f| f.print ANSWERS }
-    generate_module('simp-dummy','pupmod.answers')
+    generate_module('simp-dnsmasq','pupmod.answers')
   end
 
 
-  desc 'run `bundle exec rake test` inside the generated module'
+  desc 'run `bundle exec rake test` inside the generated module' +
+       "\n\n\tEnvironment variables:\n" +
+       "\t----------------------\n" +
+       "\tSIMP_beaker_suites=yes   # include beaker suites [default: no]"
   task :test do
     ensure_tmp
     Dir.chdir TMP_DIR
 
     # Different versions of `puppet module generate` will produce a directory
     # with the name (changed since Puppet #21272/PUP-3124:
-    mod_dir = ['dummy', 'simp-dummy'].select{ |x| File.directory? x }.first
+    mod_dir = ['dnsmasq', 'simp-dnsmasq'].select{ |x| File.directory? x }.first
     puts "==== '#{Dir.pwd}' '#{mod_dir}'"
     "#{File.expand_path(mod_dir)}"
     puts "==== Entering #{mod_dir}"
@@ -80,8 +83,6 @@ namespace :test do
     [
       'PUPPET_VERSION',
       'STRICT_VARIABLES',
-      'FUTURE_PARSER',
-      'TRUSTED_NODE_DATA',
       'TRAVIS',
       'CI',
     ].each do |v|
@@ -90,8 +91,14 @@ namespace :test do
     env_globals_line = env_globals.join(' ')
 
     Bundler.with_clean_env do
-      ['bundle --without development system_tests',
-       'bundle exec rake test'].each do |cmd|
+      cmds = ['bundle exec rake test']
+      if ENV.fetch('SIMP_beaker_suites','no') == 'yes'
+        cmds << 'bundle exec rake beaker:suites[default]'
+        _verb = 'with'
+      end
+      cmds = cmds.unshift "bundle --#{_verb||'without'} development system_tests"
+
+      cmds.each do |cmd|
         line = "#{env_globals_line} #{cmd}"
         puts "==== EXECUTING: #{line}"
         exit 1 unless system(line)
