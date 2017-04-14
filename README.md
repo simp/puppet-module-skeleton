@@ -11,6 +11,11 @@ framework built on Puppet.
 
 ## Usage
 
+### Setting up for the first time
+
+Run bundler:
+
+    bundle update
 
 ### Generating a module
 
@@ -30,8 +35,7 @@ development:
 
     rake acceptance                                # Run acceptance tests
     rake beaker                                    # Run beaker acceptance tests
-    rake beaker:run[nodeset]                       # Run a Beaker test against a specific Nod...
-    rake beaker:suites                             # Run beaker suites acceptance tests
+    rake beaker:suites[set,node]                   # Run beaker suites acceptance tests
     rake beaker_nodes                              # List available beaker nodesets
     rake build                                     # Build puppet module package
     rake clean                                     # Clean a built module package / Remove an...
@@ -64,6 +68,25 @@ Of particular interest should be:
 * `rake lint`          - checks against the puppet style guide
 * `rake syntax`        - to check you have valid puppet and erb syntax
 
+
+### Testing the module skeleton
+
+To test the generator and the generated skeleton:
+
+    # runs `rake test` (syntax, validation, lint, and spec tests)
+    bundle exec rake test
+
+To run the acceptance suite `rake beaker:suites[default]` after the normal
+tests:
+
+    SKELETON_beaker_suites=yes bundle exec rake test
+
+
+By default, the tests remove the generated `Gemfile.lock` to permit matrixed
+tests where `$PUPPET_VERSION` is not `~>4.8.0`.  To keep the generated
+`Gemfile.lock`, include the environment variable:
+
+    SKELETON_keep_gemfilie_lock=yes
 
 ## Notes on versions
 

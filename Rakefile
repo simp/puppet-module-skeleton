@@ -71,7 +71,7 @@ namespace :test do
     Dir.chdir TMP_DIR
 
     # Different versions of `puppet module generate` will produce a directory
-    # with the name (changed since Puppet #21272/PUP-3124:
+    # with the name (changed since Puppet #21272/PUP-3124):
     mod_dir = ['dnsmasq', 'simp-dnsmasq'].select{ |x| File.directory? x }.first
     puts "==== '#{Dir.pwd}' '#{mod_dir}'"
     "#{File.expand_path(mod_dir)}"
@@ -92,11 +92,14 @@ namespace :test do
 
     Bundler.with_clean_env do
       cmds = ['bundle exec rake test']
-      if ENV.fetch('SIMP_beaker_suites','no') == 'yes'
+      if ENV.fetch('SKELETON_beaker_suites','no') == 'yes'
         cmds << 'bundle exec rake beaker:suites[default]'
         _verb = 'with'
       end
       cmds = cmds.unshift "bundle --#{_verb||'without'} development system_tests"
+      unless ENV.fetch('SKELETON_keep_gemfilie_lock','no') == 'yes'
+        cmds = cmds.unshift "rm -f Gemfile.lock"
+      end
 
       cmds.each do |cmd|
         line = "#{env_globals_line} #{cmd}"
