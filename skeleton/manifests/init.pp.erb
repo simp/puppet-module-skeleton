@@ -48,8 +48,8 @@
 # @author <%= metadata.author || 'Author name here' %>
 #
 class <%= metadata.name %> (
-  String           $service_name           = $::<%= metadata.name %>::params::service_name,
-  String           $package_name           = $::<%= metadata.name %>::params::package_name,
+  String           $service_name           = '<%= metadata.name %>',
+  String           $package_name           = '<%= metadata.name %>',
   Simplib::Port    $tcp_listen_port        = 9999,
   Simplib::Netlist $trusted_nets           = simplib::lookup('simp_options::trusted_nets', {'default_value' => ['127.0.0.1/32'] }),
   Boolean          $enable_pki             = simplib::lookup('simp_options::pki', { 'default_value' => false }),
@@ -59,49 +59,52 @@ class <%= metadata.name %> (
   Boolean          $enable_selinux         = simplib::lookup('simp_options::selinux', { 'default_value' => false }),
   Boolean          $enable_tcpwrappers     = simplib::lookup('simp_options::tcpwrappers', { 'default_value' => false })
 
-) inherits ::<%= metadata.name %>::params {
+) {
+
+  $oses = load_module_metadata( $module_name )['operatingsystem_support'].map |$i| { $i['operatingsystem'] }
+  unless $::operatingsystem in $oses { fail("${::operatingsystem} not supported") }
 
   include '::<%= metadata.name %>::install'
   include '::<%= metadata.name %>::config'
   include '::<%= metadata.name %>::service'
-  Class[ '::<%= metadata.name %>::install' ] ->
-  Class[ '::<%= metadata.name %>::config'  ] ~>
-  Class[ '::<%= metadata.name %>::service' ] ->
-  Class[ '::<%= metadata.name %>' ]
+  Class[ '::<%= metadata.name %>::install' ]
+  -> Class[ '::<%= metadata.name %>::config'  ]
+  ~> Class[ '::<%= metadata.name %>::service' ]
+  -> Class[ '::<%= metadata.name %>' ]
 
   if $enable_pki {
     include '::<%= metadata.name %>::config::pki'
-    Class[ '::<%= metadata.name %>::config::pki' ] ->
-    Class[ '::<%= metadata.name %>::service' ]
+    Class[ '::<%= metadata.name %>::config::pki' ]
+    -> Class[ '::<%= metadata.name %>::service' ]
   }
 
   if $enable_auditing {
     include '::<%= metadata.name %>::config::auditing'
-    Class[ '::<%= metadata.name %>::config::auditing' ] ->
-    Class[ '::<%= metadata.name %>::service' ]
+    Class[ '::<%= metadata.name %>::config::auditing' ]
+    -> Class[ '::<%= metadata.name %>::service' ]
   }
 
   if $enable_firewall {
     include '::<%= metadata.name %>::config::firewall'
-    Class[ '::<%= metadata.name %>::config::firewall' ] ->
-    Class[ '::<%= metadata.name %>::service'  ]
+    Class[ '::<%= metadata.name %>::config::firewall' ]
+    -> Class[ '::<%= metadata.name %>::service'  ]
   }
 
   if $enable_logging {
     include '::<%= metadata.name %>::config::logging'
-    Class[ '::<%= metadata.name %>::config::logging' ] ->
-    Class[ '::<%= metadata.name %>::service' ]
+    Class[ '::<%= metadata.name %>::config::logging' ]
+    -> Class[ '::<%= metadata.name %>::service' ]
   }
 
   if $enable_selinux {
     include '::<%= metadata.name %>::config::selinux'
-    Class[ '::<%= metadata.name %>::config::selinux' ] ->
-    Class[ '::<%= metadata.name %>::service' ]
+    Class[ '::<%= metadata.name %>::config::selinux' ]
+    -> Class[ '::<%= metadata.name %>::service' ]
   }
 
   if $enable_tcpwrappers {
     include '::<%= metadata.name %>::config::tcpwrappers'
-    Class[ '::<%= metadata.name %>::config::tcpwrappers' ] ->
-    Class[ '::<%= metadata.name %>::service' ]
+    Class[ '::<%= metadata.name %>::config::tcpwrappers' ]
+    -> Class[ '::<%= metadata.name %>::service' ]
   }
 }

@@ -1,12 +1,10 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    CFPropertyList (2.2.8)
     coderay (1.1.1)
     facter (2.4.6)
-      CFPropertyList (~> 2.2.6)
-    hiera (3.2.2)
-    json_pure (1.8.3)
+    hiera (3.3.1)
+    json_pure (1.8.6)
     method_source (0.8.2)
     pry (0.10.4)
       coderay (~> 1.1.0)
@@ -15,14 +13,13 @@ GEM
     pry-doc (0.10.0)
       pry (~> 0.9)
       yard (~> 0.9)
-    puppet (4.8.1)
-      CFPropertyList (~> 2.2.6)
+    puppet (4.8.2)
       facter (> 2.0, < 4)
       hiera (>= 2.0, < 4)
       json_pure (~> 1.8)
     rake (12.0.0)
     slop (3.6.0)
-    yard (0.9.5)
+    yard (0.9.8)
 
 PLATFORMS
   ruby
@@ -30,8 +27,8 @@ PLATFORMS
 DEPENDENCIES
   pry
   pry-doc
-  puppet (~> 4)
+  puppet (~> 4.8.0)
   rake
 
 BUNDLED WITH
-   1.13.3
+   1.14.6
