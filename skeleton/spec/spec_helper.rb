@@ -81,6 +81,10 @@ RSpec.configure do |c|
     FileUtils.rm_rf(@spec_global_env_temp) # clean up the mocked environmentpath
     @spec_global_env_temp = nil
   end
+
+  c.after(:suite) do
+    RSpec::Puppet::Coverage.report!
+  end
 end
 
 Dir.glob("#{RSpec.configuration.module_path}/*").each do |dir|
