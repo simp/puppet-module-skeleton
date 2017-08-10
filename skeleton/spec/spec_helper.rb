@@ -65,6 +65,9 @@ RSpec.configure do |c|
   end
 
   c.before(:each) do
+    # For working on FIPS enabled systems
+    Puppet[:digest_algorithm] = 'sha256'
+
     @spec_global_env_temp = Dir.mktmpdir('simpspec')
 
     if defined?(environment)
