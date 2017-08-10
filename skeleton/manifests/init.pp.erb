@@ -1,6 +1,7 @@
 # Full description of SIMP module '<%= metadata.name %>' here.
 #
 # === Welcome to SIMP!
+#
 # This module is a component of the System Integrity Management Platform, a
 # managed security compliance framework built on Puppet.
 #
@@ -48,17 +49,16 @@
 # @author <%= metadata.author || 'Author name here' %>
 #
 class <%= metadata.name %> (
-  String           $service_name           = '<%= metadata.name %>',
-  String           $package_name           = '<%= metadata.name %>',
-  Simplib::Port    $tcp_listen_port        = 9999,
-  Simplib::Netlist $trusted_nets           = simplib::lookup('simp_options::trusted_nets', {'default_value' => ['127.0.0.1/32'] }),
-  Boolean          $enable_pki             = simplib::lookup('simp_options::pki', { 'default_value' => false }),
-  Boolean          $enable_auditing        = simplib::lookup('simp_options::auditd', { 'default_value' => false }),
-  Boolean          $enable_firewall        = simplib::lookup('simp_options::firewall', { 'default_value' => false }),
-  Boolean          $enable_logging         = simplib::lookup('simp_options::syslog', { 'default_value' => false }),
-  Boolean          $enable_selinux         = simplib::lookup('simp_options::selinux', { 'default_value' => false }),
-  Boolean          $enable_tcpwrappers     = simplib::lookup('simp_options::tcpwrappers', { 'default_value' => false })
-
+  String                        $service_name       = '<%= metadata.name %>',
+  String                        $package_name       = '<%= metadata.name %>',
+  Simplib::Port                 $tcp_listen_port    = 9999,
+  Simplib::Netlist              $trusted_nets       = simplib::lookup('simp_options::trusted_nets', {'default_value' => ['127.0.0.1/32'] }),
+  Boolean                       $enable_pki         = simplib::lookup('simp_options::pki', { 'default_value'         => false }),
+  Boolean                       $enable_auditing    = simplib::lookup('simp_options::auditd', { 'default_value'      => false }),
+  Variant[Boolean,Enum['simp']] $enable_firewall    = simplib::lookup('simp_options::firewall', { 'default_value'    => false }),
+  Boolean                       $enable_logging     = simplib::lookup('simp_options::syslog', { 'default_value'      => false }),
+  Boolean                       $enable_selinux     = simplib::lookup('simp_options::selinux', { 'default_value'     => false }),
+  Boolean                       $enable_tcpwrappers = simplib::lookup('simp_options::tcpwrappers', { 'default_value' => false })
 ) {
 
   $oses = load_module_metadata( $module_name )['operatingsystem_support'].map |$i| { $i['operatingsystem'] }
@@ -67,10 +67,10 @@ class <%= metadata.name %> (
   include '::<%= metadata.name %>::install'
   include '::<%= metadata.name %>::config'
   include '::<%= metadata.name %>::service'
+
   Class[ '::<%= metadata.name %>::install' ]
-  -> Class[ '::<%= metadata.name %>::config'  ]
+  -> Class[ '::<%= metadata.name %>::config' ]
   ~> Class[ '::<%= metadata.name %>::service' ]
-  -> Class[ '::<%= metadata.name %>' ]
 
   if $enable_pki {
     include '::<%= metadata.name %>::config::pki'
@@ -87,7 +87,7 @@ class <%= metadata.name %> (
   if $enable_firewall {
     include '::<%= metadata.name %>::config::firewall'
     Class[ '::<%= metadata.name %>::config::firewall' ]
-    -> Class[ '::<%= metadata.name %>::service'  ]
+    -> Class[ '::<%= metadata.name %>::service' ]
   }
 
   if $enable_logging {
