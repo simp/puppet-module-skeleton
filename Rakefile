@@ -38,6 +38,10 @@ def generate_module( name, answers_file=nil )
 end
 
 
+task :default do
+  sh %(rake -T)
+end
+
 desc 'generate a module using the skeleton'
 task :generate,[:module_name] do |t,args|
   generate_module(args.module_name)
