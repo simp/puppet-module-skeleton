@@ -1,37 +1,103 @@
 # The testing matrix considers ruby/puppet versions supported by SIMP and PE:
 # ------------------------------------------------------------------------------
 #  release    pup   ruby      eol
-# PE 2016.2   4.5   2.1.9  2017-04-30
-# PE 2016.4   4.7   2.1.9  TBD (LTS)
-# PE 2016.5   4.8   2.1.9  TBD
+# PE 2016.4   4.7   2.1.9  2018-10
+# PE 2016.5   4.8   2.1.9  2017-10
 # SIMP6.0.0   4.8   2.1.9  TBD
-# PE 2017.1   4.9   2.1.9  TBD
+# PE 2017.1   4.9   2.1.9  2017-10
+# PE 2017.2   4.10  2.1.9  2018-02
+# PE 2018.1   5.5   2.4.4  2020-05
 ---
 language: ruby
-sudo: false
 cache: bundler
-before_script:
-  - bundle update
-bundler_args: --without development system_tests
-before_install: rm Gemfile.lock || true
-script:
-  - bundle exec rake test
+sudo: false
+
+bundler_args: --without development system_tests --path .vendor
+
 notifications:
   email: false
-rvm:
-  - 2.1.9
-env:
-  global:
-    - STRICT_VARIABLES=yes
-  matrix:
-    - PUPPET_VERSION="~> 4.8.1"
-    - PUPPET_VERSION="~> 4.9.0"
-    - PUPPET_VERSION="~> 4.7.0"
-    # --------------------------- non-critical versions
-    - PUPPET_VERSION="~> 4.10.0"
-    - PUPPET_VERSION="~> 4.5.0"
-matrix:
-  fast_finish: true
-  allow_failures:
-    - env: PUPPET_VERSION="~> 4.10.0"
-    - env: PUPPET_VERSION="~> 4.5.0"
+
+addons:
+  apt:
+    packages:
+      - rpm
+
+before_install:
+  - rm -f Gemfile.lock
+  - gem update --system
+
+jobs:
+  include:
+    - stage: check
+      rvm: 2.4.1
+      script:
+        - bundle exec rake check:dot_underscore
+        - bundle exec rake check:test_file
+        - bundle exec rake lint
+        - bundle exec rake metadata_lint
+        - bundle exec rake pkg:check_version
+        - bundle exec rake pkg:compare_latest_tag
+        - bundle exec rake pkg:create_tag_changelog
+        - bundle exec puppet module build
+
+    - stage: spec
+      rvm: 2.4.4
+      env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 5.5.1"
+      script:
+        - bundle exec rake spec
+
+    - stage: spec
+      rvm: 2.4.1
+      env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 5.0"
+      script:
+        - bundle exec rake spec
+
+    - stage: spec
+      rvm: 2.1.9
+      env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 4.10.0"
+      script:
+        - bundle exec rake spec
+
+    - stage: spec
+      rvm: 2.1.9
+      env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 4.9.2"
+      script:
+        - bundle exec rake spec
+
+    - stage: spec
+      rvm: 2.1.9
+      env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 4.8.2"
+      script:
+        - bundle exec rake spec
+
+    - stage: spec
+      rvm: 2.1.9
+      env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 4.7.0"
+      script:
+        - bundle exec rake spec
+
+    # Uncomment the following for deployment tasks and set 'secure' in both
+    # sections appropriately
+#   - stage: deploy
+#     rvm: 2.4.1
+#     script:
+#       - true
+#     before_deploy:
+#       - "export PUPMOD_METADATA_VERSION=`ruby -r json -e \"puts JSON.parse(File.read('metadata.json')).fetch('version')\"`"
+#       - '[[ $TRAVIS_TAG =~ ^simp-${PUPMOD_METADATA_VERSION}$|^${PUPMOD_METADATA_VERSION}$ ]]'
+#     deploy:
+#       - provider: releases
+#         api_key:
+#           secure: ""
+#         skip_cleanup: true
+#         on:
+#           tags: true
+#           condition: '($SKIP_FORGE_PUBLISH != true)'
+#       - provider: puppetforge
+#         user: simp
+#         password:
+#           secure: ""
+#         on:
+#           tags: true
+#           rvm: 2.4.1
+#           condition: '($SKIP_FORGE_PUBLISH != true)'
