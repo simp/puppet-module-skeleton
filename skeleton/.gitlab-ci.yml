@@ -2,6 +2,8 @@
 
 #=======================================================================
 # Global stuff
+#=======================================================================
+
 stages:
   - 'sanity'
   - 'lint'
@@ -38,6 +40,7 @@ cache:
 
 #=======================================================================
 # Anchors
+#=======================================================================
 
 .lint_base: &lint_base
   stage: 'lint'
@@ -106,7 +109,7 @@ cache:
 #
 # * PE 2016.4 released with Puppet 4.7.0, but upgraded to the 4.10 series
 # starting with 2016.4.5.
-#
+# ----------------------------------------------------------------------
 
 .pe_2016_4: &pe_2016_4
   variables:
@@ -146,6 +149,8 @@ cache:
 # cache generation into a single job for the later stages.  The first stage,
 # in particular, would otherwise suffer a heavy cache-miss penalty as its
 # jobs kick off in parallel.
+#=======================================================================
+
 sanity_checks:
   stage: 'sanity'
   tags: ['docker']
@@ -164,10 +169,11 @@ tag_check:
 
 #=======================================================================
 # Lint Tests
-#
+#=======================================================================
 
-# Linting, for the most part, isn't affected by version changes in Puppet,
-# so we only test against the latest version for each MAJOR release.
+# Linting, for the most part, isn't affected by version changes in Puppet, so
+# we only test against the latest version for each MAJOR release.
+
 pup4_latest-lint:
   <<: *lint_base
   <<: *pup4_latest
@@ -180,10 +186,12 @@ pup5_latest-lint:
 
 #=======================================================================
 # Unit Test Matrix
-#
+#=======================================================================
 
 # ----------------------------------------------------------------------
 # Puppet 4.7 for early releases of PE 2016.4 LTS
+# ----------------------------------------------------------------------
+
 pup4_7-unit:
   <<: *unit_base
   <<: *pe_2016_4
@@ -191,6 +199,8 @@ pup4_7-unit:
 
 # ----------------------------------------------------------------------
 # Puppet 4.8 for SIMP 6 and PE 2016.5
+# ----------------------------------------------------------------------
+
 pup4_8-unit:
   <<: *unit_base
   <<: *simp_6_0
@@ -198,6 +208,8 @@ pup4_8-unit:
 
 # ----------------------------------------------------------------------
 # Puppet 4.10 for SIMP 6.1, PE 2016.4 LTS, and 2017.2
+# ----------------------------------------------------------------------
+
 pup4_10-unit:
   <<: *unit_base
   <<: *simp_6_1
@@ -205,6 +217,8 @@ pup4_10-unit:
 
 # ----------------------------------------------------------------------
 # Puppet 5.3 for PE 2017.3
+# ----------------------------------------------------------------------
+
 pup5_3-unit:
   <<: *unit_base
   <<: *pe_2017_3
@@ -212,6 +226,8 @@ pup5_3-unit:
 
 # ----------------------------------------------------------------------
 # Puppet 5.5 for PE 2018.1 LTS
+# ----------------------------------------------------------------------
+
 pup5_5-unit:
   <<: *unit_base
   <<: *pe_2018_1
@@ -219,22 +235,25 @@ pup5_5-unit:
 
 # ----------------------------------------------------------------------
 # Keep an eye on the latest Puppet 5.x release
+# ----------------------------------------------------------------------
+
 pup5_latest-unit:
   <<: *unit_base
   <<: *pup5_latest
   image: 'ruby:2.4'
 
-
 # ==============================================================================
 # Acceptance tests
+# ==============================================================================
 #
-
 # Because acceptance tests are so much more expensive than other tests, this
 # test matrix is even more limited.  Here we stick to versions supported
 # by non-EOL meta-releases of SIMP and LTS versions of Puppet Enterprise.
-
+#
 # ----------------------------------------------------------------------
 # Puppet 4.8 for SIMP 6.0 and PE 2016.5
+# ----------------------------------------------------------------------
+
 el-pup4_8-default:
   <<: *acceptance_base
   <<: *simp_6_0
@@ -251,6 +270,8 @@ el-pup4_8-default-fips:
 
 # ----------------------------------------------------------------------
 # Puppet 4.10 for SIMP 6.1, PE 2016.4 LTS, and PE 2017.2
+# ----------------------------------------------------------------------
+
 el-pup4_10-default:
   <<: *acceptance_base
   <<: *simp_6_1
@@ -267,6 +288,8 @@ el-pup4_10-default-fips:
 
 # ----------------------------------------------------------------------
 # Puppet 5.5 for PE 2018.1 LTS
+# ----------------------------------------------------------------------
+
 el-pup5_5-default:
   <<: *acceptance_base
   <<: *pe_2018_1
@@ -284,6 +307,7 @@ el-pup5_5-default-fips:
 
 #=======================================================================
 # Deployment Jobs
+#=======================================================================
 
 module_build:
   only:
