@@ -1,22 +1,23 @@
 HOSTS:
-  el7:
+  oel7:
     roles:
       - default
       - master
       - client
     platform:   el-7-x86_64
-    box:        centos/7
+    box:        elastic/oel-7-x86_64
     hypervisor: vagrant
     yum_repos:
       epel:
         mirrorlist: 'https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch'
         gpgkeys:
           - https://getfedora.org/static/352C64E5.txt
-  el6:
+
+  oel6:
     roles:
       - client
     platform:   el-6-x86_64
-    box:        centos/6
+    box:        elastic/oel-6-x86_64
     hypervisor: vagrant
     yum_repos:
       epel:

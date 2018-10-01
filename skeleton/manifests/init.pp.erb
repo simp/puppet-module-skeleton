@@ -61,8 +61,7 @@ class <%= metadata.name %> (
   Boolean                       $enable_tcpwrappers = simplib::lookup('simp_options::tcpwrappers', { 'default_value' => false })
 ) {
 
-  $oses = load_module_metadata( $module_name )['operatingsystem_support'].map |$i| { $i['operatingsystem'] }
-  unless $::operatingsystem in $oses { fail("${::operatingsystem} not supported") }
+  assert_metadata($module_name)
 
   include '::<%= metadata.name %>::install'
   include '::<%= metadata.name %>::config'
