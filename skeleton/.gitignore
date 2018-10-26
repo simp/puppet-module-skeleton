@@ -2,6 +2,7 @@
 .yardoc
 dist
 /pkg
+sec_results
 /spec/fixtures
 /spec/rp_env
 !/spec/hieradata/default.yaml

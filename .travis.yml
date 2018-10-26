@@ -1,37 +1,48 @@
 # The testing matrix considers ruby/puppet versions supported by SIMP and PE:
+#
+# https://puppet.com/docs/pe/latest/overview/component_versions_in_recent_pe_releases.html
+# https://puppet.com/misc/puppet-enterprise-lifecycle
+# https://puppet.com/docs/pe/latest/overview/getting_support_for_pe.html
 # ------------------------------------------------------------------------------
-#  release    pup   ruby      eol
-# PE 2016.2   4.5   2.1.9  2017-04-30
-# PE 2016.4   4.7   2.1.9  TBD (LTS)
-# PE 2016.5   4.8   2.1.9  TBD
-# SIMP6.0.0   4.8   2.1.9  TBD
-# PE 2017.1   4.9   2.1.9  TBD
+# Release       Puppet   Ruby   EOL
+# PE 2016.4.15  4.10.12  2.1.9  2018-12 (LTS)
+# SIMP 6.0      4.8.2    2.1.9  TBD
+# SIMP 6.1      4.10.6   2.1.9  TBD
+# SIMP 6.2      4.10.12  2.1.9  TBD
+# SIMP 6.3      5.5.7    2.4.4  TBD***
+# PE 2018.1     5.5.6    2.4.4  2020-05 (LTS)***
+#
+# *** = Modules created for SIMP 6.3+ are not required to support Puppet < 5.5
 ---
 language: ruby
-sudo: false
 cache: bundler
-before_script:
-  - bundle update
-bundler_args: --without development system_tests
-before_install: rm Gemfile.lock || true
-script:
-  - bundle exec rake test
+sudo: false
+
+bundler_args: --without development system_tests --path .vendor
+
 notifications:
   email: false
-rvm:
-  - 2.1.9
-env:
-  global:
-    - STRICT_VARIABLES=yes
-  matrix:
-    - PUPPET_VERSION="~> 4.8.1"
-    - PUPPET_VERSION="~> 4.9.0"
-    - PUPPET_VERSION="~> 4.7.0"
-    # --------------------------- non-critical versions
-    - PUPPET_VERSION="~> 4.10.0"
-    - PUPPET_VERSION="~> 4.5.0"
-matrix:
-  fast_finish: true
-  allow_failures:
-    - env: PUPPET_VERSION="~> 4.10.0"
-    - env: PUPPET_VERSION="~> 4.5.0"
+
+addons:
+  apt:
+    packages:
+      - rpm
+
+before_install:
+  - rm -f Gemfile.lock
+  - gem update --system
+
+jobs:
+  include:
+    - stage: test
+      rvm: 2.4.4
+      env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 5.5.6"
+      script:
+        - bundle exec rake test
+
+    - stage: test
+      rvm: 2.4.4
+      env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 5.0"
+      script:
+        - bundle exec rake test
+

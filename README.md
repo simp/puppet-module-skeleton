@@ -22,17 +22,6 @@ git clone https://github.com/simp/puppet-module-skeleton
 ln -s puppet-module-skeleton/skeleton .
 ```
 
-### Puppet < 4
-
-Perform the following steps to install the module skeleton:
-
-```shell
-mkdir -p ~/.puppet/var/puppet-module/skeleton
-cd ~/.puppet/var/puppet-module/skeleton
-git clone https://github.com/simp/puppet-module-skeleton
-ln -s puppet-module-skeleton/skeleton .
-```
-
 ### Setting up for the first time
 
 Run bundler:
@@ -60,32 +49,29 @@ You should now have a bunch of rake commands to help with your module
 development:
 
 ```shell
-rake acceptance                                # Run acceptance tests
-rake beaker                                    # Run beaker acceptance tests
-rake beaker:suites[set,node]                   # Run beaker suites acceptance tests
-rake beaker_nodes                              # List available beaker nodesets
-rake build                                     # Build puppet module package
-rake clean                                     # Clean a built module package / Remove an...
-rake clobber                                   # Remove any generated file / Clobber buil...
-rake contributors                              # Populate CONTRIBUTORS file
-rake coverage                                  # Generate code coverage information
-rake help                                      # Display the list of available rake tasks
-rake lint                                      # Run puppet-lint
-rake metadata                                  # Validate metadata.json file
-rake pkg:rpm[chroot,unique,snapshot_release]   # Build the pupmod-simp-simplib RPM
-rake pkg:scrub[chroot,unique]                  # Scrub the pupmod-simp-simplib mock build...
-rake pkg:srpm[chroot,unique,snapshot_release]  # Build the pupmod-simp-simplib SRPM
-rake pkg:tar[snapshot_release]                 # Build the pupmod-simp-simplib tar package
-rake spec                                      # Run spec tests in a clean fixtures direc...
-rake spec_clean                                # Clean up the fixtures directory
-rake spec_prep                                 # Create the fixtures directory
-rake spec_standalone                           # Run spec tests on an existing fixtures d...
-rake syntax                                    # Syntax check Puppet manifests and templates
-rake syntax:hiera                              # Syntax check Hiera config files
-rake syntax:manifests                          # Syntax check Puppet manifests
-rake syntax:templates                          # Syntax check Puppet templates
-rake test                                      # Run syntax, lint, and spec tests
-rake validate                                  # Check syntax of Ruby files and call :syn...
+rake beaker:suites[set,node]                     # Run beaker suites acceptance tests
+rake build                                       # Build puppet module package
+rake clean                                       # Clean a built module package / Remove an...
+rake clobber                                     # Remove any generated file / Clobber buil...
+rake contributors                                # Populate CONTRIBUTORS file
+rake help                                        # Display the list of available rake tasks
+rake lint                                        # Run puppet-lint
+rake metadata                                    # Validate metadata.json file
+rake pkg:check_rpm_changelog[verbose]            # Check the module RPM changelog using the 'rpm'...
+rake pkg:check_version                           # Ensure the module has a properly updated version number
+rake pkg:compare_latest_tag[tags_source,verbose] # Compare to latest tag
+rake pkg:create_tag_changelog[verbose]           # Generate a  changelog for an annotated tag...
+rake pkg:tar                                     # Build the module tar package
+rake spec                                        # Run spec tests in a clean fixtures direc...
+rake spec_clean                                  # Clean up the fixtures directory
+rake spec_prep                                   # Create the fixtures directory
+rake spec_standalone                             # Run spec tests on an existing fixtures d...
+rake syntax                                      # Syntax check Puppet manifests and templates
+rake syntax:hiera                                # Syntax check Hiera config files
+rake syntax:manifests                            # Syntax check Puppet manifests
+rake syntax:templates                            # Syntax check Puppet templates
+rake test                                        # Run syntax, lint, and spec tests
+rake validate                                    # Check syntax of Ruby files and call :syn...
 ```
 
 Of particular interest should be:
