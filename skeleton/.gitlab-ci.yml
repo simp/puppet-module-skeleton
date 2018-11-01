@@ -56,6 +56,13 @@ variables:
     - 'rm -rf pkg/ || :'
     - 'bundle check || rm -f Gemfile.lock && ("${BUNDLER_INSTALL_CMD[@]}" --local || "${BUNDLER_INSTALL_CMD[@]}" || bundle pristine ||  "${BUNDLER_INSTALL_CMD[@]}") || echo "PIPELNE: Bundler could not find everything"'
 
+# To avoid running a prohibitive number of tests every commit,
+# don't set this env var in your gitlab instance
+.only_with_SIMP_FULL_MATRIX: &only_with_SIMP_FULL_MATRIX
+  only:
+    variables:
+      - $SIMP_FULL_MATRIX
+
 # Puppet + testing environments
 # --------------------------------------
 .pup_4_10_X: &pup_4_10_X
@@ -70,22 +77,23 @@ variables:
     PUPPET_VERSION: '~> 4.0'
     MATRIX_RUBY_VERSION: '2.1'
 
-.pup_5_5_6: &pup_5_5_6
+# PE 2018.1
+.pe_current: &pe_current
   image: 'ruby:2.4'
   variables:
     PUPPET_VERSION: '5.5.6'
     BEAKER_PUPPET_COLLECTION: 'puppet5'
     MATRIX_RUBY_VERSION: '2.4'
 
-.pup_5_5_7: &pup_5_5_7
+# Puppet for 6.3
+.pup_current: &pup_current
   image: 'ruby:2.4'
   variables:
     PUPPET_VERSION: '5.5.7'
     BEAKER_PUPPET_COLLECTION: 'puppet5'
     MATRIX_RUBY_VERSION: '2.4'
 
-
-.pup_5_latest: &pup_5_latest
+.pup_latest: &pup_latest
   image: 'ruby:2.4'
   variables:
     PUPPET_VERSION: '~> 5.0'
@@ -123,7 +131,7 @@ variables:
 #=======================================================================
 
 sanity_checks:
-  <<: *pup_5_latest
+  <<: *pup_latest
   <<: *setup_bundler_env
   stage: 'sanity'
   tags: ['docker']
@@ -138,79 +146,94 @@ pup4-lint:
   <<: *pup_4_latest
   <<: *lint_tests
 
-pup5-lint:
-  <<: *pup_5_latest
+pup-current-lint:
+  <<: *pup_current
+  <<: *lint_tests
+
+pup-latest-lint:
+  <<: *pup_latest
   <<: *lint_tests
 
 
 pup4.10-unit:
-  <<: *pup_4_10_x
+  <<: *pup_4_10_X
   <<: *unit_tests
 
-pup5.5.6-unit:
-  <<: *pup_5_5_6
+pe-current-unit:
+  <<: *pe_current
   <<: *unit_tests
 
-pup5.5.7-unit:
-  <<: *pup_5_5_7
+pup-current-unit:
+  <<: *pup_current
   <<: *unit_tests
 
-pup5.latest-unit:
-  <<: *pup_5_latest
+pup-latest-unit:
+  <<: *pup_latest
   <<: *unit_tests
 
 
-pup4.10-acceptance:
+pup4.10-default:
   <<: *pup_4_10_X
   <<: *acceptance_base
   script:
     - 'bundle exec rake beaker:suites'
 
-pup4.10-fips-acceptance:
+pup4.10-fips-default:
   <<: *pup_4_10_X
   <<: *acceptance_base
+  <<: *only_with_SIMP_FULL_MATRIX
   script:
     - 'BEAKER_fips=yes bundle exec rake beaker:suites'
 
-pup5.5-acceptance:
-  <<: *pup_5_5_7
+pup-current-default:
+  <<: *pup_current
   <<: *acceptance_base
   script:
     - 'bundle exec rake beaker:suites'
 
-pup5.5-fips-acceptance:
-  <<: *pup_5_5_7
+pup-current-fips-default:
+  <<: *pup_current
   <<: *acceptance_base
   script:
     - 'BEAKER_fips=yes bundle exec rake beaker:suites'
 
-pup5.5-oel-acceptance:
-  <<: *pup_5_5_7
+pup-current-oel-default:
+  <<: *pup_current
   <<: *acceptance_base
   script:
     - 'bundle exec rake beaker:suites[default,oel]'
 
-pup5.5-fips-compliance:
-  <<: *pup_5_5_7
-  <<: *compliance_base
-
-# Deployment jobs
-#=======================================================================
-
-module_build:
-  only:
-    - 'tags'
-  stage: 'deployment'
-  tags:
-    - 'docker'
+pup-current-oel-fips-default:
+  <<: *pup_current
+  <<: *acceptance_base
+  <<: *only_with_SIMP_FULL_MATRIX
   script:
-    - 'bundle exec rake clean'
-    - 'rm -rf pkg/'
-    - 'bundle exec puppet module build'
-  artifacts:
-    name: 'forge_release-${CI_COMMIT_TAG}'
-    when: 'on_success'
-    paths:
-      - 'pkg/${MODULE_NAME}-${MODULE_VERSION}.tar.gz'
+    - 'BEAKER_fips=yes bundle exec rake beaker:suites[default,oel]'
+
+pup-current-fips-compliance:
+  <<: *pup_current
+  <<: *compliance_base
+  script:
+    - 'BEAKER_fips=yes bundle exec rake beaker:suites[compliance]'
+
+# FUTURE
+## Deployment jobs
+##=======================================================================
+#
+#module_build:
+#  only:
+#    - 'tags'
+#  stage: 'deployment'
+#  tags:
+#    - 'docker'
+#  script:
+#    - 'bundle exec rake clean'
+#    - 'rm -rf pkg/'
+#    - 'bundle exec puppet module build'
+#  artifacts:
+#    name: 'forge_release-${CI_COMMIT_TAG}'
+#    when: 'on_success'
+#    paths:
+#      - 'pkg/${MODULE_NAME}-${MODULE_VERSION}.tar.gz'
 
 # vi:tabstop=2:shiftwidth=2:expandtab
