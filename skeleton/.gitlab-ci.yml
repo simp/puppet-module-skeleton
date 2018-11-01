@@ -65,16 +65,10 @@ variables:
 
 # Puppet + testing environments
 # --------------------------------------
-.pup_4_10_X: &pup_4_10_X
+.pup_prev: &pup_prev
   image: 'ruby:2.1'
   variables:
     PUPPET_VERSION: '~> 4.10.4'
-    MATRIX_RUBY_VERSION: '2.1'
-
-.pup_4_latest: &pup_4_latest
-  image: 'ruby:2.1'
-  variables:
-    PUPPET_VERSION: '~> 4.0'
     MATRIX_RUBY_VERSION: '2.1'
 
 # PE 2018.1
@@ -142,8 +136,8 @@ sanity_checks:
     - 'bundle exec rake pkg:compare_latest_tag'
 
 
-pup4-lint:
-  <<: *pup_4_latest
+pup-prev-lint:
+  <<: *pup_prev
   <<: *lint_tests
 
 pup-current-lint:
@@ -155,8 +149,8 @@ pup-latest-lint:
   <<: *lint_tests
 
 
-pup4.10-unit:
-  <<: *pup_4_10_X
+pup-prev-unit:
+  <<: *pup_prev
   <<: *unit_tests
 
 pe-current-unit:
@@ -172,14 +166,14 @@ pup-latest-unit:
   <<: *unit_tests
 
 
-pup4.10-default:
-  <<: *pup_4_10_X
+pup-prev-default:
+  <<: *pup_prev
   <<: *acceptance_base
   script:
     - 'bundle exec rake beaker:suites'
 
-pup4.10-fips-default:
-  <<: *pup_4_10_X
+pup-prev-fips-default:
+  <<: *pup_prev
   <<: *acceptance_base
   <<: *only_with_SIMP_FULL_MATRIX
   script:
