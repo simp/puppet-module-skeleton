@@ -48,13 +48,14 @@ variables:
     paths:
       - '.vendor'
   before_script:
+    - 'ruby -e "puts %(Environment Variables:\n  * #{ENV.keys.grep(/PUPPET|SIMP|BEAKER|MATRIX/).map{|v| %(#{v} = #{ENV[v]})}.join(%(\n  * ))})"'
     - 'declare GEM_BUNDLER_VER=(-v "~> ${BUNDLER_VERSION:-1.16.0}")'
     - 'declare GEM_INSTALL_CMD=(gem install --no-document)'
     - 'declare BUNDLER_INSTALL_CMD=(bundle install --no-binstubs --jobs $(nproc) "${FLAGS[@]}")'
     - 'mkdir -p ${GEM_HOME} ${BUNDLER_BIN}'
     - 'gem list -ie "${GEM_BUNDLER_VER[@]}" --silent bundler || "${GEM_INSTALL_CMD[@]}" --local "${GEM_BUNDLER_VER[@]}" bundler || "${GEM_INSTALL_CMD[@]}" "${GEM_BUNDLER_VER[@]}" bundler'
     - 'rm -rf pkg/ || :'
-    - 'bundle check || rm -f Gemfile.lock && ("${BUNDLER_INSTALL_CMD[@]}" --local || "${BUNDLER_INSTALL_CMD[@]}" || bundle pristine ||  "${BUNDLER_INSTALL_CMD[@]}") || echo "PIPELNE: Bundler could not find everything"'
+    - 'bundle check || rm -f Gemfile.lock && ("${BUNDLER_INSTALL_CMD[@]}" --local || "${BUNDLER_INSTALL_CMD[@]}" || bundle pristine ||  "${BUNDLER_INSTALL_CMD[@]}") || echo "PIPELINE: Bundler could not find everything"'
 
 # To avoid running a prohibitive number of tests every commit,
 # don't set this env var in your gitlab instance
