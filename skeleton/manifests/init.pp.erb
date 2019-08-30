@@ -61,7 +61,7 @@ class <%= metadata.name %> (
   Boolean                       $enable_tcpwrappers = simplib::lookup('simp_options::tcpwrappers', { 'default_value' => false })
 ) {
 
-  assert_metadata($module_name)
+  simplib::assert_metadata($module_name)
 
   include '::<%= metadata.name %>::install'
   include '::<%= metadata.name %>::config'
