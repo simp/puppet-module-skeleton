@@ -37,4 +37,6 @@ env:
 matrix:
   fast_finish: true
   allow_failures:
+    # Puppet 6 can't generate or build modules, but it can run spec tests
+    # We should lash up something to generate/build 6.0 modules using Puppet 5
     - env: PUPPET_VERSION="~> 6.0"
