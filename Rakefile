@@ -95,7 +95,18 @@ namespace :test do
     env_globals_line = env_globals.join(' ')
 
     Bundler.with_clean_env do
-      cmds = ['bundle exec rake test']
+      cmds = [
+        'bundle exec rake check:dot_underscore',
+        'bundle exec rake check:test_file',
+        'bundle exec rake pkg:check_version',
+        'bundle exec rake metadata_lint',
+        'bundle exec rake pkg:compare_latest_tag',
+        'bundle exec rake pkg:create_tag_changelog',
+        'bundle exec rake lint',
+        'bundle exec rake validate',
+        'bundle exec rake test',
+        'bundle exec puppet module build',
+      ]
       if ENV.fetch('SKELETON_beaker_suites','no') == 'yes'
         cmds << 'bundle exec rake beaker:suites[default]'
         _verb = 'with'
