@@ -30,7 +30,9 @@ def ensure_tmp
 end
 
 def generate_module( name, answers_file=nil )
-  cmd = "bundle exec puppet module generate #{name} --module_skeleton_dir=#{SKELETON_DIR}"
+  ENV['MODULE_CMD_PUPPET_VERSION'] ||= (ENV['PUPPET_VERSION'] || nil)
+  puts "==== Using PUPPET_VERSION='#{ENV['MODULE_CMD_PUPPET_VERSION']}' to run `puppet module`"
+  cmd = "PUPPET_VERSION=\"$MODULE_CMD_PUPPET_VERSION\" bundle exec puppet module generate #{name} --module_skeleton_dir=#{SKELETON_DIR}"
   if answers_file
     cmd = "#{cmd} < #{answers_file}"
   end
@@ -92,7 +94,6 @@ namespace :test do
     ].each do |v|
       env_globals << %Q(#{v}="#{ENV[v]}") if ENV.key?( v )
     end
-    env_globals_line = env_globals.join(' ')
 
     Bundler.with_clean_env do
       cmds = [
@@ -105,19 +106,39 @@ namespace :test do
         'bundle exec rake lint',
         'bundle exec rake validate',
         'bundle exec rake test',
-        'bundle exec puppet module build',
       ]
       if ENV.fetch('SKELETON_beaker_suites','no') == 'yes'
         cmds << 'bundle exec rake beaker:suites[default]'
         _verb = 'with'
       end
       cmds = cmds.unshift "bundle --#{_verb||'without'} development system_tests"
-      unless ENV.fetch('SKELETON_keep_gemfilie_lock','no') == 'yes'
+      unless ENV.fetch('SKELETON_keep_gemfile_lock','no') == 'yes'
         cmds = cmds.unshift "rm -f Gemfile.lock"
       end
 
       cmds.each do |cmd|
-        line = "#{env_globals_line} #{cmd}"
+        line = "#{env_globals.join(' ')} #{cmd}"
+        puts "==== EXECUTING: #{line}"
+        exit 1 unless system(line)
+      end
+    end
+
+    Bundler.with_clean_env do
+      ENV['MODULE_CMD_PUPPET_VERSION'] ||= (ENV['PUPPET_VERSION'] || nil)
+      env_globals.delete_if{|line| line =~ /^PUPPET_VERSION=/}
+      cmds = [
+        'rm -f Gemfile.lock',
+        'PUPPET_VERSION="$MODULE_CMD_PUPPET_VERSION" bundle --without development system_tests',
+        'PUPPET_VERSION="$MODULE_CMD_PUPPET_VERSION" bundle exec puppet module build',
+      ]
+      if ENV['MODULE_CMD_PUPPET_VERSION'] != ENV['PUPPET_VERSION']
+        msg =  "== WORKAROUND: Set PUPPET_VERSION='#{ENV['MODULE_CMD_PUPPET_VERSION']}'" +
+          "to run 'puppet module' instead of PUPPET_VERSION='#{ENV['PUPPET_VERSION']}'"
+        cmds.unshift %Q[echo "#{msg}"]
+        cmds.push %Q[echo "#{msg}"]
+      end
+      cmds.each do |cmd|
+        line = "#{env_globals.join(' ')} #{cmd}"
         puts "==== EXECUTING: #{line}"
         exit 1 unless system(line)
       end
