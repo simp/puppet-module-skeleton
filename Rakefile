@@ -32,7 +32,7 @@ end
 def generate_module( name, answers_file=nil )
   ENV['MODULE_CMD_PUPPET_VERSION'] ||= (ENV['PUPPET_VERSION'] || nil)
   puts "==== Using PUPPET_VERSION='#{ENV['MODULE_CMD_PUPPET_VERSION']}' to run `puppet module`"
-  cmd = "PUPPET_VERSION=\"$MODULE_CMD_PUPPET_VERSION\" bundle exec puppet module generate #{name} --module_skeleton_dir=#{SKELETON_DIR}"
+  cmd = "PUPPET_VERSION=\"#{ENV['MODULE_CMD_PUPPET_VERSION']}\" bundle exec puppet module generate #{name} --module_skeleton_dir=#{SKELETON_DIR}"
   if answers_file
     cmd = "#{cmd} < #{answers_file}"
   end
