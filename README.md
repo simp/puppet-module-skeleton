@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/simp/puppet-module-skeleton.svg?branch=master)](https://travis-ci.org/simp/puppet-module-skeleton)
 
 <!-- vim-markdown-toc GFM -->
+
 * [Compatibility](#compatibility)
 * [Usage](#usage)
   * [Generating a module](#generating-a-module)
@@ -104,7 +105,7 @@ tests where `$PUPPET_VERSION` is not `~>5.5.0`.  To keep the generated
 `Gemfile.lock`, include the environment variable:
 
 ```shell
-SKELETON_keep_gemfilie_lock=yes
+SKELETON_keep_gemfile_lock=yes
 ```
 
 ## Thanks
