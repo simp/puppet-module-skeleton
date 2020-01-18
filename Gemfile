@@ -9,8 +9,9 @@ gem_sources   = ENV.fetch('GEM_SERVERS','https://rubygems.org').split(/[, ]+/)
 gem_sources.each { |gem_source| source gem_source }
 
 group :test do
-  gem "rake"
+  gem 'rake'
   gem 'puppet', ENV.fetch('PUPPET_VERSION', '~>5.5.0') # Default to SIMP 6
+  gem 'pdk',    ENV.fetch('PDK_VERSION', '~> 1.0')
 end
 
 group :development do
