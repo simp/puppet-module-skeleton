@@ -28,7 +28,7 @@ describe '<%= metadata.name %>' do
 
         context "<%= metadata.name %> class with firewall enabled" do
           let(:params) {{
-            :enable_firewall => true
+            :firewall => true
           }}
 
           ###it_behaves_like "a structured module"
@@ -41,7 +41,7 @@ describe '<%= metadata.name %>' do
 
         context "<%= metadata.name %> class with selinux enabled" do
           let(:params) {{
-            :enable_selinux => true
+            :selinux => true
           }}
 
           ###it_behaves_like "a structured module"
@@ -52,7 +52,7 @@ describe '<%= metadata.name %>' do
 
         context "<%= metadata.name %> class with auditing enabled" do
           let(:params) {{
-            :enable_auditing => true
+            :auditing => true
           }}
 
           ###it_behaves_like "a structured module"
@@ -63,7 +63,7 @@ describe '<%= metadata.name %>' do
 
         context "<%= metadata.name %> class with logging enabled" do
           let(:params) {{
-            :enable_logging => true
+            :logging => true
           }}
 
           ###it_behaves_like "a structured module"

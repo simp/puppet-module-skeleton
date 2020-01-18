@@ -1,6 +1,7 @@
 RSpec.configure do |c|
   c.mock_with :rspec
 end
+
 require 'puppetlabs_spec_helper/module_spec_helper'
 require 'rspec-puppet'
 require 'simp/rspec-puppet-facts'
@@ -14,17 +15,23 @@ module_name = File.basename(File.expand_path(File.join(__FILE__,'../..')))
 
 default_hiera_config =<<-EOM
 ---
-:backends:
-  - "rspec"
-  - "yaml"
-:yaml:
-  :datadir: "stub"
-:hierarchy:
-  - "%{custom_hiera}"
-  - "%{spec_title}"
-  - "%{module_name}"
-  - "default"
+version: 5
+hierarchy:
+  - name: SIMP Compliance Engine
+    lookup_key: compliance_markup::enforcement
+    options:
+      enabled_sce_versions: [2]
+  - name: Custom Test Hiera
+    path: "%{custom_hiera}.yaml"
+  - name: "%{module_name}"
+    path: "%{module_name}.yaml"
+  - name: Common
+    path: default.yaml
+defaults:
+  data_hash: yaml_data
+  datadir: "stub"
 EOM
+
 
 # This can be used from inside your spec tests to set the testable environment.
 # You can use this to stub out an ENC.
