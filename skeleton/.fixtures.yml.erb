@@ -10,5 +10,10 @@ fixtures:
     stdlib:
       repo: https://github.com/simp/puppetlabs-stdlib
       ref: 4.13.1
+    compliance_markup: https://github.com/simp/pupmod-simp-compliance_markup
+    disa_stig-el7-baseline:
+      repo: https://github.com/simp/inspec-profile-disa_stig-el7
+      branch:  master
+      target: spec/fixtures/inspec_deps/inspec_profiles/profiles
   symlinks:
     <%= metadata.name %>: "#{source_dir}"
