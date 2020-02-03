@@ -14,6 +14,7 @@ sudo: false
 cache: bundler
 before_script:
   - bundle update
+  - bundle exec rake clean
 bundler_args: --without development system_tests
 before_install: rm Gemfile.lock || true
 addons:
