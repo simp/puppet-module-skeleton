@@ -38,7 +38,7 @@ jobs:
     - stage: test
       name: 'Puppet 6.10 (PE 2019.2)'
       rvm: 2.5.7
-      env: 'PUPPET_VERSION="~>6.10.0" MODULE_CMD_PUPPET_VERSION="~> 5.5.0"'
+      env: 'PUPPET_VERSION="~>6.10.0"'
       script:
         - bundle exec rake test
 

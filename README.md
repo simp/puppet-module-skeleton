@@ -50,8 +50,11 @@ development:
 rake acceptance                                # Run acceptance tests
 rake beaker                                    # Run beaker acceptance tests
 rake beaker:suites[set,node]                   # Run beaker suites acceptance tests
-rake beaker_nodes                              # List available beaker nodesets
+rake beaker:ssh[set,node]                      # Try to use vagrant to login to the Beaker node
+rake beaker:sets                               # List available beaker nodesets
 rake build                                     # Build puppet module package
+rake build:pdk                                 # Build Puppet module with PDK
+rake build:pmt                                 # Build Puppet module package with PMT (Puppet ...
 rake clean                                     # Clean a built module package / Remove an...
 rake clobber                                   # Remove any generated file / Clobber buil...
 rake contributors                              # Populate CONTRIBUTORS file

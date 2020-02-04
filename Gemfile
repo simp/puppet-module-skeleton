@@ -11,7 +11,6 @@ gem_sources.each { |gem_source| source gem_source }
 group :test do
   gem 'rake'
   gem 'puppet', ENV['PUPPET_VERSION']
-  gem 'pdk',    ENV.fetch('PDK_VERSION', '~> 1.0')
 end
 
 group :development do

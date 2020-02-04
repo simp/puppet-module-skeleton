@@ -1,4 +1,5 @@
 require 'rake/clean'
+require 'puppet'
 
 ANSWERS = <<EOF
 0.1.3
@@ -17,12 +18,24 @@ PUPPET_CONF_DIR = ENV.fetch( 'PUPPET_CONF_DIR',  %x{bundle exec puppet config pr
 TMP_DIR         = ENV.fetch( 'TMP_DIR', File.expand_path( 'tmp', File.dirname( __FILE__ )) )
 BUNDLER_GEMFILE = ENV.fetch( 'BUNDLER_GEMFILE', './Gemfile' )
 CLEAN << TMP_DIR
-MODULE_CMD_PUPPET_VERSION = ENV['MODULE_CMD_PUPPET_VERSION'] ||= (ENV['PUPPET_VERSION'] || nil)
-PUPPET_VERSION            = ENV['PUPPET_VERSION']
 
 if Rake.verbose == true
   puts "SKELETON_DIR    = '#{SKELETON_DIR}'"
   puts "PUPPET_CONF_DIR = '#{PUPPET_CONF_DIR}'"
+end
+
+def puppet_version
+  require 'puppet'
+  @puppet_version ||= Puppet.version
+end
+
+def module_cmd_puppet_version
+  return @module_cmd_puppet_version if @module_cmd_puppet_version
+  if puppet_version.split('.').first.to_i > 5
+    @module_cmd_puppet_version = '~> 5.5.10'
+  else
+    @module_cmd_puppet_version = puppet_version
+  end
 end
 
 def ensure_tmp
@@ -30,9 +43,8 @@ def ensure_tmp
   FileUtils.mkdir_p TMP_DIR
 end
 
-def bundle_exec_with_clean_env(cmds=[],keep_env_keys=[])
+def bundle_exec_with_clean_env(cmds=[], env_globals = [])
   # propagate relavent environment variables
-  env_globals = []
   [
     'PUPPET_VERSION',
     'STRICT_VARIABLES',
@@ -43,6 +55,7 @@ def bundle_exec_with_clean_env(cmds=[],keep_env_keys=[])
   end
 
   yield cmds, env_globals if block_given?
+
   Bundler.with_clean_env do
     cmds.each do |cmd|
       line = "#{env_globals.join(' ')} #{cmd}"
@@ -53,22 +66,22 @@ def bundle_exec_with_clean_env(cmds=[],keep_env_keys=[])
 end
 
 def generate_module( name, answers_file=nil )
-  cmd = "PUPPET_VERSION=\"#{MODULE_CMD_PUPPET_VERSION}\" " + \
+  cmd = "PUPPET_VERSION=\"#{module_cmd_puppet_version}\" " + \
     "bundle exec puppet module generate #{name} --module_skeleton_dir=#{SKELETON_DIR}"
   cmd = "#{cmd} < #{answers_file}" if answers_file
-  bundle_exec_with_clean_env([cmd]) do |cmds, env_globals|
-    if MODULE_CMD_PUPPET_VERSION != PUPPET_VERSION
-      env_globals.delete_if{|line| line =~ /^PUPPET_VERSION=/}
-      warn  "== WORKAROUND: Setting PUPPET_VERSION='#{MODULE_CMD_PUPPET_VERSION}'"
-      warn  "== (to run 'puppet module' instead of PUPPET_VERSION='#{PUPPET_VERSION}')"
-      new_cmds = [
-        "PUPPET_VERSION=\"#{MODULE_CMD_PUPPET_VERSION}\" bundle update",
-      ]
-      cmds.replace( new_cmds + cmds )
-    end
+  cmds = [cmd]
+
+  if module_cmd_puppet_version != puppet_version
+    warn  "== PMT generate WORKAROUND: Setting PUPPET_VERSION='#{module_cmd_puppet_version}'"
+    warn  "==   to run 'puppet module' (instead of PUPPET_VERSION='#{puppet_version}')"
+    new_cmds = [ "PUPPET_VERSION=\"#{module_cmd_puppet_version}\" bundle update" ]
+    cmds = new_cmds + cmds
+  end
+
+  bundle_exec_with_clean_env(cmds) do |_cmds, env_globals|
+    env_globals.delete_if{|line| line =~ /^PUPPET_VERSION=/}
   end
 end
-
 
 task :default do
   sh %(rake -T)
@@ -136,19 +149,8 @@ namespace :test do
     bundle_exec_with_clean_env test_cmds
 
     # Make sure module builds
-    bundle_exec_with_clean_env([
-      'rm -f Gemfile.lock',
-      "PUPPET_VERSION=\"#{MODULE_CMD_PUPPET_VERSION}\" bundle --without development system_tests",
-      "PUPPET_VERSION=\"#{MODULE_CMD_PUPPET_VERSION}\" bundle exec puppet module build",
-    ]) do |cmds, env_globals|
-      env_globals.delete_if{|line| line =~ /^PUPPET_VERSION=/}
-      if MODULE_CMD_PUPPET_VERSION != PUPPET_VERSION
-        msg =  "== WORKAROUND: Set PUPPET_VERSION='#{MODULE_CMD_PUPPET_VERSION}' " +
-          "to run 'puppet module' instead of PUPPET_VERSION='#{PUPPET_VERSION}'"
-
-        cmds.unshift %Q[echo "#{msg}"]
-        cmds.push %Q[echo "#{msg}"]
-      end
-    end
+    build_cmds = ( module_cmd_puppet_version != puppet_version ) ? \
+      ['bundle exec rake build:pdk'] : ['bundle exec puppet module build']
+    bundle_exec_with_clean_env(build_cmds)
   end
 end
