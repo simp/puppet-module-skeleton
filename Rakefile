@@ -150,7 +150,7 @@ namespace :test do
 
     # Make sure module builds
     build_cmds = ( module_cmd_puppet_version != puppet_version ) ? \
-      ['bundle exec rake build:pdk'] : ['bundle exec puppet module build']
+      ['PDK_DISABLE_ANALYTICS=yes bundle exec rake build:pdk'] : ['bundle exec puppet module build']
     bundle_exec_with_clean_env(build_cmds)
   end
 end
