@@ -47,47 +47,47 @@ class <%= metadata.name %> (
 
   simplib::assert_metadata($module_name)
 
-  include '::<%= metadata.name %>::install'
-  include '::<%= metadata.name %>::config'
-  include '::<%= metadata.name %>::service'
+  include '<%= metadata.name %>::install'
+  include '<%= metadata.name %>::config'
+  include '<%= metadata.name %>::service'
 
-  Class[ '::<%= metadata.name %>::install' ]
-  -> Class[ '::<%= metadata.name %>::config' ]
-  ~> Class[ '::<%= metadata.name %>::service' ]
+  Class[ '<%= metadata.name %>::install' ]
+  -> Class[ '<%= metadata.name %>::config' ]
+  ~> Class[ '<%= metadata.name %>::service' ]
 
   if $pki {
-    include '::<%= metadata.name %>::config::pki'
-    Class[ '::<%= metadata.name %>::config::pki' ]
-    -> Class[ '::<%= metadata.name %>::service' ]
+    include '<%= metadata.name %>::config::pki'
+    Class[ '<%= metadata.name %>::config::pki' ]
+    -> Class[ '<%= metadata.name %>::service' ]
   }
 
   if $auditing {
-    include '::<%= metadata.name %>::config::auditing'
-    Class[ '::<%= metadata.name %>::config::auditing' ]
-    -> Class[ '::<%= metadata.name %>::service' ]
+    include '<%= metadata.name %>::config::auditing'
+    Class[ '<%= metadata.name %>::config::auditing' ]
+    -> Class[ '<%= metadata.name %>::service' ]
   }
 
   if $firewall {
-    include '::<%= metadata.name %>::config::firewall'
-    Class[ '::<%= metadata.name %>::config::firewall' ]
-    -> Class[ '::<%= metadata.name %>::service' ]
+    include '<%= metadata.name %>::config::firewall'
+    Class[ '<%= metadata.name %>::config::firewall' ]
+    -> Class[ '<%= metadata.name %>::service' ]
   }
 
   if $logging {
-    include '::<%= metadata.name %>::config::logging'
-    Class[ '::<%= metadata.name %>::config::logging' ]
-    -> Class[ '::<%= metadata.name %>::service' ]
+    include '<%= metadata.name %>::config::logging'
+    Class[ '<%= metadata.name %>::config::logging' ]
+    -> Class[ '<%= metadata.name %>::service' ]
   }
 
   if $selinux {
-    include '::<%= metadata.name %>::config::selinux'
-    Class[ '::<%= metadata.name %>::config::selinux' ]
-    -> Class[ '::<%= metadata.name %>::service' ]
+    include '<%= metadata.name %>::config::selinux'
+    Class[ '<%= metadata.name %>::config::selinux' ]
+    -> Class[ '<%= metadata.name %>::service' ]
   }
 
   if $tcpwrappers {
-    include '::<%= metadata.name %>::config::tcpwrappers'
-    Class[ '::<%= metadata.name %>::config::tcpwrappers' ]
-    -> Class[ '::<%= metadata.name %>::service' ]
+    include '<%= metadata.name %>::config::tcpwrappers'
+    Class[ '<%= metadata.name %>::config::tcpwrappers' ]
+    -> Class[ '<%= metadata.name %>::service' ]
   }
 }
