@@ -1,43 +1,30 @@
 # SIMP puppet module skeleton
 [![Build Status](https://travis-ci.org/simp/puppet-module-skeleton.svg?branch=master)](https://travis-ci.org/simp/puppet-module-skeleton)
 
+<!-- vim-markdown-toc GFM -->
+
+* [Compatibility](#compatibility)
+* [Usage](#usage)
+  * [Generating a module](#generating-a-module)
+    * [Rake tasks](#rake-tasks)
+  * [Testing the module skeleton](#testing-the-module-skeleton)
+* [Thanks](#thanks)
+
+<!-- vim-markdown-toc -->
 
 This is a _very_ opinionated Puppet module skeleton, forked from the fantastic
 [garethr/puppet-module-skeleton](https://github.com/garethr/puppet-module-skeleton).
 It provides a template for the `puppet module generate` tool to generate new
-modules targeted toward inclusion with
-[SIMP](https://github.com/NationalSecurityAgency/SIMP), a compliance-management
-framework built on Puppet.
+modules targeted toward inclusion with [SIMP](https://simp-project.com),
+a compliance-management framework built on Puppet.
+
+## Compatibility
+
+* The module conventions were last updated for **SIMP 6.4.0-0**
+* The default Puppet version is ~> **5.5.0**
+* The `Gemfile.lock` was last generated with **Ruby 2.4.5**
 
 ## Usage
-
-### Puppet 4+
-
-Perform the following steps to install the module skeleton:
-
-```shell
-mkdir -p ~/.puppetlabs/opt/puppet/cache/puppet-module/
-cd ~/.puppetlabs/opt/puppet/cache/puppet-module/
-git clone https://github.com/simp/puppet-module-skeleton
-ln -s puppet-module-skeleton/skeleton .
-```
-
-### Puppet < 4
-
-Perform the following steps to install the module skeleton:
-
-```shell
-mkdir -p ~/.puppet/var/puppet-module/skeleton
-cd ~/.puppet/var/puppet-module/skeleton
-git clone https://github.com/simp/puppet-module-skeleton
-ln -s puppet-module-skeleton/skeleton .
-```
-
-### Setting up for the first time
-
-Run bundler:
-
-    bundle update
 
 ### Generating a module
 
@@ -63,8 +50,11 @@ development:
 rake acceptance                                # Run acceptance tests
 rake beaker                                    # Run beaker acceptance tests
 rake beaker:suites[set,node]                   # Run beaker suites acceptance tests
-rake beaker_nodes                              # List available beaker nodesets
+rake beaker:ssh[set,node]                      # Try to use vagrant to login to the Beaker node
+rake beaker:sets                               # List available beaker nodesets
 rake build                                     # Build puppet module package
+rake build:pdk                                 # Build Puppet module with PDK
+rake build:pmt                                 # Build Puppet module package with PMT (Puppet ...
 rake clean                                     # Clean a built module package / Remove an...
 rake clobber                                   # Remove any generated file / Clobber buil...
 rake contributors                              # Populate CONTRIBUTORS file
@@ -114,19 +104,16 @@ SKELETON_beaker_suites=yes bundle exec rake test
 ```
 
 By default, the tests remove the generated `Gemfile.lock` to permit matrixed
-tests where `$PUPPET_VERSION` is not `~>4.8.0`.  To keep the generated
+tests where `$PUPPET_VERSION` is not `~>5.5.0`.  To keep the generated
 `Gemfile.lock`, include the environment variable:
 
 ```shell
-SKELETON_keep_gemfilie_lock=yes
+SKELETON_keep_gemfile_lock=yes
 ```
-
-## Notes on versions
-
-* The `Gemfile.lock` was last generated with Ruby 2.1.9
-* The `.fixtures.yml` was last updated for SIMP 6.0.0-Alpha
 
 ## Thanks
 
-- This module was forked from the [garethr/puppet-module-skeleton](https://github.com/garethr/puppet-module-skeleton).
-- A few other bits came from another excellent module skeleton from [spiette](https://github.com/spiette/puppet-module-skeleton).
+- This module was forked from the
+  [garethr/puppet-module-skeleton](https://github.com/garethr/puppet-module-skeleton).
+- A few other bits came from another excellent module skeleton from
+  [spiette](https://github.com/spiette/puppet-module-skeleton).

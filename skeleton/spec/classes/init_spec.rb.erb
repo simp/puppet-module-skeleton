@@ -10,14 +10,14 @@ describe '<%= metadata.name %>' do
     it { is_expected.to contain_class('<%= metadata.name %>::service').that_subscribes_to('Class[<%= metadata.name %>::config]') }
 
     it { is_expected.to contain_service('<%= metadata.name %>') }
-    it { is_expected.to contain_package('<%= metadata.name %>').with_ensure('present') }
+    it { is_expected.to contain_package('<%= metadata.name %>').with_ensure('installed') }
   end
 
   context 'supported operating systems' do
-    on_supported_os.each do |os, facts|
+    on_supported_os.each do |os, os_facts|
       context "on #{os}" do
         let(:facts) do
-          facts
+          os_facts
         end
 
         context "<%= metadata.name %> class without any parameters" do
@@ -28,7 +28,7 @@ describe '<%= metadata.name %>' do
 
         context "<%= metadata.name %> class with firewall enabled" do
           let(:params) {{
-            :enable_firewall => true
+            :firewall => true
           }}
 
           ###it_behaves_like "a structured module"
@@ -41,7 +41,7 @@ describe '<%= metadata.name %>' do
 
         context "<%= metadata.name %> class with selinux enabled" do
           let(:params) {{
-            :enable_selinux => true
+            :selinux => true
           }}
 
           ###it_behaves_like "a structured module"
@@ -52,7 +52,7 @@ describe '<%= metadata.name %>' do
 
         context "<%= metadata.name %> class with auditing enabled" do
           let(:params) {{
-            :enable_auditing => true
+            :auditing => true
           }}
 
           ###it_behaves_like "a structured module"
@@ -63,7 +63,7 @@ describe '<%= metadata.name %>' do
 
         context "<%= metadata.name %> class with logging enabled" do
           let(:params) {{
-            :enable_logging => true
+            :logging => true
           }}
 
           ###it_behaves_like "a structured module"
@@ -79,10 +79,14 @@ describe '<%= metadata.name %>' do
     describe '<%= metadata.name %> class without any parameters on Solaris/Nexenta' do
       let(:facts) {{
         :osfamily        => 'Solaris',
-        :operatingsystem => 'Nexenta'
+        :operatingsystem => 'Nexenta',
+        :os => {
+          :family => 'Solaris',
+          :name   => 'Nexenta',
+        }
       }}
 
-      it { expect { is_expected.to contain_package('<%= metadata.name %>') }.to raise_error(Puppet::Error, /Nexenta not supported/) }
+      it { expect { is_expected.to contain_package('dummy') }.to raise_error(Puppet::Error, /'Nexenta' is not supported/) }
     end
   end
 end

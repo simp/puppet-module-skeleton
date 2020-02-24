@@ -1,1 +1,43 @@
-centos-combined-x64.yml
+<%
+  if ENV['BEAKER_HYPERVISOR']
+    hypervisor = ENV['BEAKER_HYPERVISOR']
+  else
+    hypervisor = 'vagrant'
+  end
+-%>
+HOSTS:
+  el7:
+    roles:
+      - default
+      - master
+      - client
+    platform:   el-7-x86_64
+    box:        centos/7
+    hypervisor: vagrant
+    hypervisor: <%= hypervisor %>
+    yum_repos:
+      epel:
+        mirrorlist: 'https://mirrors.fedoraproject.org/mirrorlist?repo=epel-7&arch=$basearch&country=us'
+        gpgkeys:
+          - https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever
+
+  el6:
+    roles:
+      - client
+    platform:   el-6-x86_64
+    box:        centos/6
+    hypervisor: <%= hypervisor %>
+    yum_repos:
+      epel:
+        mirrorlist: 'https://mirrors.fedoraproject.org/mirrorlist?repo=epel-6&arch=$basearch&country=us'
+        gpgkeys:
+          - https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-$releasever
+
+
+CONFIG:
+  log_level: verbose
+  type: aio
+  vagrant_memsize: 256
+<% if ENV['BEAKER_PUPPET_COLLECTION'] -%>
+  puppet_collection: <%= ENV['BEAKER_PUPPET_COLLECTION'] %>
+<% end -%>
