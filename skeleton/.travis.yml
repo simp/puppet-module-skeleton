@@ -19,7 +19,7 @@
 #   SKIP_GITHUB_PUBLISH    Optional  Skips publishing GitHub releases if "true"
 #   SKIP_FORGE_PUBLISH     Optional  Skips publishing to Puppet Forge if "true"
 #
-#   The secure env vars wiil be filtered in Travis CI log output, and aren't
+#   The secure env vars will be filtered in Travis CI log output, and aren't
 #   provided to untrusted builds (i.e, triggered by PR from another repository)
 #
 # ------------------------------------------------------------------------------
