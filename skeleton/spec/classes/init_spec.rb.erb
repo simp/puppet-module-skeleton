@@ -10,7 +10,7 @@ describe '<%= metadata.name %>' do
     it { is_expected.to contain_class('<%= metadata.name %>::service').that_subscribes_to('Class[<%= metadata.name %>::config]') }
 
     it { is_expected.to contain_service('<%= metadata.name %>') }
-    it { is_expected.to contain_package('<%= metadata.name %>').with_ensure('present') }
+    it { is_expected.to contain_package('<%= metadata.name %>').with_ensure('installed') }
   end
 
   context 'supported operating systems' do

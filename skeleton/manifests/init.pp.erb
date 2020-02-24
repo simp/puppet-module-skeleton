@@ -35,6 +35,7 @@
 class <%= metadata.name %> (
   String                             $service_name       = '<%= metadata.name %>',
   String                             $package_name       = '<%= metadata.name %>',
+  String[1]                          $package_ensure     = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
   Simplib::Port                      $tcp_listen_port    = 9999,
   Simplib::Netlist                   $trusted_nets       = simplib::lookup('simp_options::trusted_nets', {'default_value' => ['127.0.0.1/32'] }),
   Variant[Boolean,Enum['simp']]      $pki         = simplib::lookup('simp_options::pki', { 'default_value'         => false }),

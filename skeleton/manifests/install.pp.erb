@@ -4,6 +4,6 @@ class <%= metadata.name %>::install {
   assert_private()
 
   package { $::<%= metadata.name %>::package_name:
-    ensure => present
+    ensure => $::<%= metadata.name %>::package_ensure
   }
 }
