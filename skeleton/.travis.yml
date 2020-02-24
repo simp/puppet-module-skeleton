@@ -131,7 +131,7 @@ jobs:
         - 'find pkg -name ''*.tar.gz'''
       deploy:
         - provider: script
-          cleanup: false
+          skip_cleanup: true
           script: 'curl -sS --fail -A "$FORGE_USER_AGENT" -H "Authorization: Bearer ${PUPPETFORGE_API_TOKEN}" -X POST -F "file=@$(find $PWD/pkg -name ''*.tar.gz'')" https://forgeapi.puppet.com/v3/releases'
           on:
             tags: true
