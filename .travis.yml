@@ -28,6 +28,7 @@ stages:
   - test
 
 jobs:
+  fast_finish: true
   include:
     - stage: test
       name: 'Puppet 5.5 (SIMP 6.4, PE 2018.1)'
@@ -41,6 +42,3 @@ jobs:
       env: 'PUPPET_VERSION="~>6.10.0"'
       script:
         - bundle exec rake test
-
-matrix:
-  fast_finish: true
