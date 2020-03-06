@@ -31,7 +31,7 @@ jobs:
   include:
     - stage: test
       name: 'Puppet 5.5 (SIMP 6.4, PE 2018.1)'
-      rvm: 2.4.5
+      rvm: 2.4.9
       env: 'PUPPET_VERSION="~> 5.5.0"'
       script:
         - bundle exec rake test
