@@ -91,12 +91,8 @@ RSpec.configure do |c|
     }
   }
 
-  c.mock_framework = :rspec
-  c.mock_with :rspec
-
   c.module_path = File.join(fixture_path, 'modules')
   c.manifest_dir = File.join(fixture_path, 'manifests')
-
   c.hiera_config = File.join(fixture_path,'hieradata','hiera.yaml')
 
   # Useless backtrace noise
